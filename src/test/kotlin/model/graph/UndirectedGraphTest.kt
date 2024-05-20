@@ -13,13 +13,13 @@ class UndirectedGraphTest {
 
     fun Graph<Int>.getSize() = this.vertices.size
     fun Graph<Int>.findVertex(key: Int) = this.vertices.find { it.key == key }
-    fun Graph<Int>.findEdge(key1: Int, key2: Int) = this.adjacencyList[key1]?.find { it.second.key == key2 }
+    fun Graph<Int>.findEdge(key1: Int, key2: Int) = this.adjacencyList[findVertex(key1)]?.find { it.second.key == key2 }
 
     fun Graph<Int>.checkSize(size: Int) = assertEquals(this.getSize(), size)
     fun Graph<Int>.checkContainVertex(vertex: Vertex<Int>) = assertEquals(this.findVertex(vertex.key), vertex)
     fun Graph<Int>.checkNotContainVertex(vertex: Vertex<Int>) = assertEquals(this.findVertex(vertex.key), null)
-    fun Graph<Int>.checkNotNullEdgeArray(vertex: Vertex<Int>) = assertNotNull(this.adjacencyList[vertex.key])
-    fun Graph<Int>.checkNullEdgeArray(vertex: Vertex<Int>) = assertNull(this.adjacencyList[vertex.key])
+    fun Graph<Int>.checkNotNullEdgeArray(vertex: Vertex<Int>) = assertNotNull(this.adjacencyList[vertex])
+    fun Graph<Int>.checkNullEdgeArray(vertex: Vertex<Int>) = assertNull(this.adjacencyList[vertex])
 
     fun Graph<Int>.checkExistingUndirectedEdge(key1: Int, key2: Int) {
         val edge1 = this.findEdge(key1, key2)
@@ -85,7 +85,7 @@ class UndirectedGraphTest {
             assertEquals(vertex.key, 1)
             graph.checkNotContainVertex(vertex)
             graph.checkNullEdgeArray(vertex)
-            assertNull(graph.adjacencyList[1])
+            assertNull(graph.adjacencyList[vertex])
         }
 
         @Test
@@ -122,7 +122,7 @@ class UndirectedGraphTest {
             assertNotNull(vertex1)
             assertNotNull(vertex2)
 
-            val edge = graph.addEdge(vertex1.key, vertex2.key)
+            graph.addEdge(vertex1.key, vertex2.key)
             val edgeLinkedVertices = graph.addEdge(vertex1.key, vertex2.key)
 
             assertNull(edgeLinkedVertices)
@@ -131,7 +131,7 @@ class UndirectedGraphTest {
 
         @Test
         fun `Edge with non existing vertex`() {
-            graph.addVertex(1)
+            val vertex = graph.addVertex(1)
 
             val edgeFirstNotExist = graph.addEdge(2, 1)
             val edgeSecondNotExist = graph.addEdge(1, 2)
@@ -141,7 +141,7 @@ class UndirectedGraphTest {
             assertNull(edgeSecondNotExist)
             assertNull(edgeAllNotExist)
 
-            assertEquals(graph.adjacencyList[1]?.size, 0)
+            assertEquals(graph.adjacencyList[vertex]?.size, 0)
         }
     }
 }

@@ -2,7 +2,7 @@ package model.graph
 
 interface Graph <V> {
     val vertices: Collection<Vertex<V>>
-    val adjacencyList: HashMap<V, ArrayList<Edge<V>>>
+    val adjacencyList: HashMap<Vertex<V>, ArrayList<Edge<V>>>
 
     fun addVertex(key: V): Vertex<V>?
     fun removeVertex(key: V): Vertex<V>?

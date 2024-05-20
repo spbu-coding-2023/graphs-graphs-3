@@ -2,12 +2,12 @@ package model.graph
 
 class UndirectedGraph<V>: Graph<V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
-    private val _adjacencyList = hashMapOf<V, ArrayList<Edge<V>>>()
+    private val _adjacencyList = hashMapOf<Vertex<V>, ArrayList<Edge<V>>>()
 
     override val vertices: Collection<Vertex<V>>
         get() = _vertices.values
 
-    override val adjacencyList: HashMap<V, ArrayList<Edge<V>>>
+    override val adjacencyList: HashMap<Vertex<V>, ArrayList<Edge<V>>>
         get() = _adjacencyList
 
     override fun addVertex(key: V): Vertex<V>? {
@@ -16,7 +16,7 @@ class UndirectedGraph<V>: Graph<V> {
         val vertex = UndirectedVertex(key)
 
         _vertices[key] = vertex
-        _adjacencyList[key] = arrayListOf()
+        _adjacencyList[vertex] = arrayListOf()
 
         return vertex
     }
@@ -25,7 +25,7 @@ class UndirectedGraph<V>: Graph<V> {
         val vertex = _vertices[key] ?: return null
 
         _vertices.remove(key)
-        _adjacencyList.remove(key)
+        _adjacencyList.remove(vertex)
 
         return vertex
     }
@@ -35,23 +35,26 @@ class UndirectedGraph<V>: Graph<V> {
         val vertex2 = _vertices[second] ?: return null
 
         // edge already exists
-        if (_adjacencyList[first]?.find { it.second.key == second } != null) return null
+        if (_adjacencyList[vertex1]?.find { it.second.key == second } != null) return null
 
-        _adjacencyList[first]?.add(UndirectedEdge(vertex1, vertex2))
-        _adjacencyList[second]?.add(UndirectedEdge(vertex2, vertex1))
+        _adjacencyList[vertex1]?.add(UndirectedEdge(vertex1, vertex2))
+        _adjacencyList[vertex2]?.add(UndirectedEdge(vertex2, vertex1))
 
-        return _adjacencyList[first]?.last()
+        return _adjacencyList[vertex1]?.last()
     }
 
     override fun removeEdge(first: V, second: V): Edge<V>? {
-        val edge1 = _adjacencyList[first]?.find { it.second.key == second }
-        val edge2 = _adjacencyList[second]?.find { it.second.key == first }
+        val vertex1 = _vertices[first]
+        val vertex2 = _vertices[second]
+
+        val edge1 = _adjacencyList[vertex1]?.find { it.second.key == second }
+        val edge2 = _adjacencyList[vertex2]?.find { it.second.key == first }
 
         // edge doesn't exist
         if (edge1 == null || edge2 == null) return null
 
-        _adjacencyList[first]?.remove(edge1)
-        _adjacencyList[second]?.remove(edge1)
+        _adjacencyList[vertex1]?.remove(edge1)
+        _adjacencyList[vertex2]?.remove(edge1)
 
         return edge1
     }
@@ -63,6 +66,10 @@ class UndirectedGraph<V>: Graph<V> {
         vertex.key = newKey
         return vertex
     }
+
+    fun findVertex(key: V) = _vertices[key]
+
+    fun getEdges(vertex: Vertex<V>) = _adjacencyList[vertex]
 
     private data class UndirectedVertex<V>(override var key: V): Vertex<V>
 
