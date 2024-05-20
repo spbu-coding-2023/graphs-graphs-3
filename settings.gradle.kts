@@ -12,4 +12,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "demo1"
+rootProject.name = "graphs-graphs-3"

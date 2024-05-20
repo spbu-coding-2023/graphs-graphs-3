@@ -1,31 +1,33 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
+import model.graph.UndirectedGraph
+import view.MainView
+import viewModel.UndirectedViewModel
 
-@Composable
-@Preview
-fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
+val AMOUNT_NODES = 100
 
-    MaterialTheme {
-        Button(onClick = {
-            text = "Hello, Desktop!"
-        }) {
-            Text(text)
+val graph = UndirectedGraph<Int>().apply {
+    for (i in (0 until AMOUNT_NODES)) {
+        addVertex(i)
+    }
+
+    for (i in (0 until AMOUNT_NODES)) {
+        for (j in (0 until AMOUNT_NODES)) {
+            if (Math.random() < 0.005) {
+                addEdge(i, j)
+            }
         }
     }
 }
 
+val undirectedViewModel = UndirectedViewModel(graph, false)
+
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
-        App()
+    Window(
+        onCloseRequest = ::exitApplication
+    ) {
+        MainView(undirectedViewModel)
     }
 }
