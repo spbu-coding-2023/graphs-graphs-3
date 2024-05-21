@@ -1,5 +1,9 @@
 package view
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.background
@@ -29,10 +33,12 @@ val MENU_WIDTH = 100f
 @Composable
 fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
     var zoom by remember { mutableFloatStateOf(1f) }
+    val zoomAnimate by animateFloatAsState(zoom, tween(200, 0, LinearOutSlowInEasing))
     var center by remember { mutableStateOf(Offset(0f, 0f)) }
+    val centerAnimate by animateOffsetAsState(center, tween(200, 0, LinearOutSlowInEasing))
     var canvasSize by remember { mutableStateOf(Offset(400f, 400f)) }
 
-    val canvasViewModel = CanvasViewModel(undirectedViewModel, zoom, center, canvasSize)
+    val canvasViewModel = CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
 
     Row(
         Modifier.fillMaxWidth().height(50f.dp).background(color = Color.Gray),
