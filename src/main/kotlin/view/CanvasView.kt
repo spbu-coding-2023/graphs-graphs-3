@@ -13,12 +13,12 @@ fun <V> CanvasView(
     Box(
         modifier = modifier
     ) {
-        viewModel.vertices.forEach {
-            VertexCanvasView(it)
-        }
-
         viewModel.edges.forEach {
             EdgeCanvasView(it)
+        }
+
+        viewModel.vertices.forEach {
+            VertexCanvasView(it)
         }
     }
 }
