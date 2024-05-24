@@ -1,6 +1,6 @@
 package model.graph
 
-class UndirectedGraph<V>: Graph<V> {
+class UndirectedGraph<V> : Graph<V> {
     private val _vertices = hashMapOf<V, Vertex<V>>()
     private val _adjacencyList = hashMapOf<Vertex<V>, ArrayList<Edge<V>>>()
 
@@ -31,6 +31,8 @@ class UndirectedGraph<V>: Graph<V> {
     }
 
     override fun addEdge(first: V, second: V): Edge<V>? {
+        if (first == second) return null
+
         val vertex1 = _vertices[first] ?: return null
         val vertex2 = _vertices[second] ?: return null
 
@@ -71,9 +73,9 @@ class UndirectedGraph<V>: Graph<V> {
 
     fun getEdges(vertex: Vertex<V>) = _adjacencyList[vertex]
 
-    private data class UndirectedVertex<V>(override var key: V): Vertex<V>
+    private data class UndirectedVertex<V>(override var key: V) : Vertex<V>
 
-    private data class UndirectedEdge<V>(override val first: Vertex<V>, override val second: Vertex<V>): Edge<V> {
+    private data class UndirectedEdge<V>(override val first: Vertex<V>, override val second: Vertex<V>) : Edge<V> {
         override var weight: Long
             get() = 1
             set(value) {}
