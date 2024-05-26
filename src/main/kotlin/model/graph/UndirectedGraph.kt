@@ -30,7 +30,7 @@ open class UndirectedGraph<V> : Graph<V> {
         return vertex
     }
 
-    override fun addEdge(first: V, second: V, weight: Long): Edge<V>? {
+    open override fun addEdge(first: V, second: V, weight: Long): Edge<V>? {
         if (first == second) return null
 
         val vertex1 = _vertices[first] ?: return null
