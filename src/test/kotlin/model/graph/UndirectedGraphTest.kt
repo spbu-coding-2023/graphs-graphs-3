@@ -8,7 +8,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @Suppress("ClassName")
-class UndirectedGraphTest {
+open class UndirectedGraphTest {
     lateinit var graph: UndirectedGraph<Int>
 
     fun Graph<Int>.getSize() = this.vertices.size
