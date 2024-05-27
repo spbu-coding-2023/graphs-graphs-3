@@ -1,8 +1,8 @@
 package model.graph
 
-class UndirectedGraph<V> : Graph<V> {
-    private val _vertices = hashMapOf<V, Vertex<V>>()
-    private val _adjacencyList = hashMapOf<Vertex<V>, ArrayList<Edge<V>>>()
+open class UndirectedGraph<V> : Graph<V> {
+    protected val _vertices = hashMapOf<V, Vertex<V>>()
+    protected val _adjacencyList = hashMapOf<Vertex<V>, ArrayList<Edge<V>>>()
 
     override val vertices: Collection<Vertex<V>>
         get() = _vertices.values
