@@ -30,7 +30,8 @@ val undirectedViewModel = UndirectedViewModel(graph, false)
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        state = rememberWindowState(placement = WindowPlacement.Maximized)
+        state = rememberWindowState(placement = WindowPlacement.Maximized),
+        undecorated = true,
     ) {
         MainView(undirectedViewModel)
     }
