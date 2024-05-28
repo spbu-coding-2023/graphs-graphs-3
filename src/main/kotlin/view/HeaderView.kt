@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -38,7 +40,17 @@ fun HeaderView(name: String, close: () -> Unit, maximize: () -> Unit, isMaximize
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(Modifier.padding(start = Config.menuWidth.dp)) {
-            MyText("File")
+            Box(
+                Modifier
+                    .size(Config.headerHeight.dp)
+                    .shadow(
+                        elevation = 5f.dp,
+                        spotColor = Color.Black
+                    ).background(Color(0xFF3D3D3D)),
+                contentAlignment = Alignment.Center
+            ) {
+                MyText("File", 16f)
+            }
         }
         Row {
             Text(text = "$name", color = Color.White, fontSize = 20f.sp)
