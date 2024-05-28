@@ -1,4 +1,4 @@
-package viewModel
+package viewModel.graph
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color

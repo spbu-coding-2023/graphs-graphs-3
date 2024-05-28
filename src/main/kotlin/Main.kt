@@ -5,7 +5,7 @@ import androidx.compose.ui.window.rememberWindowState
 import model.algorithm.Clustering
 import model.graph.UndirectedGraph
 import view.MainView
-import viewModel.UndirectedViewModel
+import viewModel.graph.UndirectedViewModel
 
 val AMOUNT_NODES = 500
 val EDGE_CHANGE = 0.05f

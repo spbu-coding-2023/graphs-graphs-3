@@ -1,10 +1,10 @@
-package viewModel
+package viewModel.graph
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import model.graph.Edge
 
-class EdgeViewModel<V> (
+class EdgeViewModel<V>(
     val first: VertexViewModel<V>,
     val second: VertexViewModel<V>,
     private val edge: Edge<V>,

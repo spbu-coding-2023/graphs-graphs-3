@@ -1,6 +1,7 @@
-package viewModel
+package viewModel.canvas
 
 import androidx.compose.ui.geometry.Offset
+import viewModel.graph.VertexViewModel
 
 class VertexCanvasViewModel<V>(
     val viewModel: VertexViewModel<V>,

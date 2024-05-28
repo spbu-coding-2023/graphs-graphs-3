@@ -1,4 +1,4 @@
-package view
+package view.canvas
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,21 +7,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import viewModel.EdgeViewModel
+import viewModel.canvas.EdgeCanvasViewModel
 
 @Composable
-fun <V> EdgeView(
-    viewModel: EdgeViewModel<V>
+fun <V> EdgeCanvasView(
+    viewModel: EdgeCanvasViewModel<V>,
+    modifier: Modifier = Modifier
 ) {
     Canvas(Modifier.fillMaxSize()) {
         drawLine(
             start = Offset(
-                viewModel.first.x.dp.toPx() + viewModel.first.radius.toPx(),
-                viewModel.first.y.dp.toPx() + viewModel.first.radius.toPx(),
+                viewModel.first.offset.x.dp.toPx() + viewModel.first.radius.toPx(),
+                viewModel.first.offset.y.dp.toPx() + viewModel.first.radius.toPx(),
             ),
             end = Offset(
-                viewModel.second.x.dp.toPx() + viewModel.second.radius.toPx(),
-                viewModel.second.y.dp.toPx() + viewModel.second.radius.toPx(),
+                viewModel.second.offset.x.dp.toPx() + viewModel.second.radius.toPx(),
+                viewModel.second.offset.y.dp.toPx() + viewModel.second.radius.toPx(),
             ),
             color = Color.Black,
             strokeWidth = 1f.dp.toPx()

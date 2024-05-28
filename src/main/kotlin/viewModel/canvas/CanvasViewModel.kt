@@ -1,6 +1,7 @@
-package viewModel
+package viewModel.canvas
 
 import androidx.compose.ui.geometry.Offset
+import viewModel.graph.UndirectedViewModel
 
 class CanvasViewModel<V>(
     graphViewModel: UndirectedViewModel<V>,
