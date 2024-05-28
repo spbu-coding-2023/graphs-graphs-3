@@ -31,19 +31,26 @@ class UndirectedViewModel<V>(
         get() = _adjacencyList
 
     private fun getColor(group: Int): Color {
-//        val color = groupColors[group]
-//
-//        if (color == null) {
-//            val newColor = Color((0..255).random(), (0..255).random(), (0..255).random())
-//            groupColors[group] = newColor
-//            return newColor
-//        }
-//
-//        return color
+        if (group > 0) {
+            val color = groupColors[group]
+
+            if (color == null) {
+                val newColor = Color((0..255).random(), (0..255).random(), (0..255).random())
+                groupColors[group] = newColor
+                return newColor
+            }
+
+            return color
+        }
+
         return _color.value
     }
 
     fun onColorChange(color: Color) {
+        if (groups.size > 0) {
+            return
+        }
+
         _color.value = color
         _vertices.forEach {
             it.value.color = _color.value
