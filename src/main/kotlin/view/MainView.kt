@@ -46,7 +46,6 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
             canvasViewModel,
             Modifier
                 .fillMaxSize()
-                .border(1f.dp, Color.Red)
                 .onPointerEvent(PointerEventType.Scroll) {
                     if (it.changes.first().scrollDelta.y > 0) {
                         zoom -= zoom / 8
