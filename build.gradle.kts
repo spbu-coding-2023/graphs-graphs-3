@@ -3,6 +3,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("jvm")
     id("org.jetbrains.compose")
+    id("jacoco")
 }
 
 group = "com.example"
@@ -25,6 +26,8 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(":louvain-1.0-SNAPSHOT")
     testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
 }
 
 compose.desktop {
@@ -41,4 +44,17 @@ compose.desktop {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy("jacocoTestReport")
+}
+
+tasks.jacocoTestReport{
+    dependsOn(tasks.test)
+    reports{
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.12"
 }
