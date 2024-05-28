@@ -38,24 +38,13 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
     val centerAnimate by animateOffsetAsState(center, tween(200, 0, LinearOutSlowInEasing))
     var canvasSize by remember { mutableStateOf(Offset(400f, 400f)) }
 
-    val canvasViewModel = CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
+    val canvasViewModel =
+        CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
 
-    Row(
-        Modifier.fillMaxWidth().height(50f.dp).background(color = Color.Gray),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = "Some Header", color = Color.White, fontSize = 20f.sp)
-    }
+    HeaderView()
 
     Row(Modifier.offset(0f.dp, 50f.dp)) {
-        Column(
-            Modifier.fillMaxHeight().width(100f.dp).background(color = Color.Black),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(text = "Some menu", color = Color.White, fontSize = 20f.sp)
-        }
+        MenuView()
 
         CanvasView(
             canvasViewModel,
@@ -89,4 +78,9 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
                 .clipToBounds()
         )
     }
+
+    SettingsView(
+        undirectedViewModel::onColorChange,
+        undirectedViewModel::onSizeChange
+    )
 }
