@@ -25,7 +25,7 @@ val graph = UndirectedGraph<Int>().apply {
 }
 
 val groups = Clustering(graph).calculate()
-val undirectedViewModel = UndirectedViewModel(graph, false, groups)
+val undirectedViewModel = UndirectedViewModel(graph, false)
 
 fun main() = application {
     Window(
