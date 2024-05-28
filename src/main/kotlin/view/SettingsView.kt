@@ -16,11 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 
-@Composable
-fun MyText(text: String, fontSize: Float = 20f) {
-    val fontFamily = FontFamily(Font(resource = "Inter-Regular.ttf"))
-    Text(text = text, color = Color.White, fontFamily = fontFamily, fontSize = fontSize.sp)
-}
 
 @Composable
 fun MySlider(text: String, state: MutableState<Float>, range: ClosedFloatingPointRange<Float> = (0f..1f)) {

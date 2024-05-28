@@ -2,6 +2,7 @@ package viewModel.canvas
 
 import androidx.compose.ui.geometry.Offset
 import viewModel.graph.UndirectedViewModel
+import kotlin.math.abs
 
 class CanvasViewModel<V>(
     graphViewModel: UndirectedViewModel<V>,
@@ -27,4 +28,8 @@ class CanvasViewModel<V>(
 
     val edges
         get() = _edges
+
+    fun getViews(): Collection<VertexCanvasViewModel<V>> {
+        return _vertices.filter { abs(it.value.offset.x) < canvasSize.x && abs(it.value.offset.y) < canvasSize.y }.values
+    }
 }

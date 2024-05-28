@@ -5,7 +5,7 @@ import viewModel.graph.VertexViewModel
 
 class VertexCanvasViewModel<V>(
     val viewModel: VertexViewModel<V>,
-    zoom: Float,
+    private val zoom: Float,
     center: Offset,
     canvasSize: Offset
 ) {
@@ -16,4 +16,8 @@ class VertexCanvasViewModel<V>(
 
     val radius = viewModel.radius * zoom
     val color = viewModel.color
+
+    fun onDrag(it: Offset): Unit {
+        viewModel.onDrag(it * (1f / zoom))
+    }
 }

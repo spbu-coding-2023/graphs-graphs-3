@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 fun MenuView() {
     println("MenuView")
     Column(
-        Modifier.fillMaxHeight().width(100f.dp).background(color = Color.Black),
+        Modifier.fillMaxHeight().width(Config.menuWidth.dp).background(color = Color(0xFF3D3D3D)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
