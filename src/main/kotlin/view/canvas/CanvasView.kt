@@ -17,7 +17,7 @@ fun <V> CanvasView(
             EdgeCanvasView(it)
         }
 
-        viewModel.vertices.forEach {
+        viewModel.getViews().forEach {
             VertexCanvasView(it)
         }
     }
