@@ -1,5 +1,6 @@
 package view
 
+import Config
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateOffsetAsState
@@ -23,8 +24,8 @@ import view.canvas.CanvasView
 import viewModel.canvas.CanvasViewModel
 import viewModel.graph.UndirectedViewModel
 
-val HEADER_HEIGHT = 50f
-val MENU_WIDTH = 100f
+val HEADER_HEIGHT = Config.headerHeight
+val MENU_WIDTH = Config.menuWidth
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -38,9 +39,7 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
     val canvasViewModel =
         CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
 
-    HeaderView()
-
-    Row(Modifier.offset(0f.dp, 50f.dp)) {
+    Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
         MenuView()
 
         CanvasView(
