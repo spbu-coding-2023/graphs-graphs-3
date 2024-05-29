@@ -39,8 +39,9 @@ class CanvasViewModel(
         return _vertices.values
     }
 
-    fun createVertex(offset: Offset) {
-        val coordinates = offset * zoom + center
+    fun createVertex(offset: Offset, center: Offset, zoom: Float) {
+        println(center)
+        val coordinates = offset * (1 / zoom) + center
         val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
         _vertices[viewModel] = VertexCanvasViewModel(viewModel, zoom, center, canvasSize)

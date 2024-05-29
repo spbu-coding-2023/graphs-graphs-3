@@ -82,7 +82,7 @@ fun MainView(undirectedViewModel: UndirectedViewModel) {
                 }.pointerInput(Unit) {
                     detectTapGestures {
                         if (isNodeCreatingMode) {
-                            canvasViewModel.createVertex(it - (canvasSize / 2f))
+                            canvasViewModel.createVertex(it - (canvasSize / 2f), center, zoom)
                             zoom += 0.000001f // костыль для рекомпозиции
                         }
                     }
