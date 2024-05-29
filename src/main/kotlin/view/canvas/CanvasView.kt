@@ -8,8 +8,8 @@ import androidx.compose.ui.graphics.Color
 import viewModel.canvas.CanvasViewModel
 
 @Composable
-fun <V> CanvasView(
-    viewModel: CanvasViewModel<V>,
+fun CanvasView(
+    viewModel: CanvasViewModel,
     modifier: Modifier = Modifier
 ) {
     Box(

@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import model.graph.Edge
 
-class EdgeViewModel<V>(
-    val first: VertexViewModel<V>,
-    val second: VertexViewModel<V>,
-    private val edge: Edge<V>,
+class EdgeViewModel(
+    val first: VertexViewModel,
+    val second: VertexViewModel,
+    private val edge: Edge,
     private val _weightVisibility: State<Boolean>,
     color: Color = Config.Edge.color,
     strokeWidth: Float = Config.Edge.strokeWidth

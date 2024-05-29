@@ -4,8 +4,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import viewModel.graph.VertexViewModel
 
-class VertexCanvasViewModel<V>(
-    val viewModel: VertexViewModel<V>,
+class VertexCanvasViewModel(
+    val viewModel: VertexViewModel,
     private val zoom: Float,
     center: Offset,
     canvasSize: Offset

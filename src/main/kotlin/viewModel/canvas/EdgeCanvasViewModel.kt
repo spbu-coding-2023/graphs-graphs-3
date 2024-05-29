@@ -2,9 +2,9 @@ package viewModel.canvas
 
 import androidx.compose.ui.graphics.Color
 
-class EdgeCanvasViewModel<V>(
-    val first: VertexCanvasViewModel<V>,
-    val second: VertexCanvasViewModel<V>,
+class EdgeCanvasViewModel(
+    val first: VertexCanvasViewModel,
+    val second: VertexCanvasViewModel,
     val color: Color,
     strokeWidth: Float,
     zoom: Float,

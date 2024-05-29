@@ -18,8 +18,8 @@ import viewModel.canvas.VertexCanvasViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun <V> VertexCanvasView(
-    viewModel: VertexCanvasViewModel<V>,
+fun VertexCanvasView(
+    viewModel: VertexCanvasViewModel,
     modifier: Modifier = Modifier
 ) {
     Box(

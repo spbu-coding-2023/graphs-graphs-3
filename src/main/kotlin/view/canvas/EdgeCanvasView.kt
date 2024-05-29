@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.dp
 import viewModel.canvas.EdgeCanvasViewModel
 
 @Composable
-fun <V> EdgeCanvasView(
-    viewModel: EdgeCanvasViewModel<V>,
+fun EdgeCanvasView(
+    viewModel: EdgeCanvasViewModel,
     modifier: Modifier = Modifier
 ) {
     Canvas(Modifier.fillMaxSize()) {

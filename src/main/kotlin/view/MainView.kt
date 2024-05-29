@@ -30,7 +30,7 @@ val MENU_WIDTH = Config.menuWidth
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
+fun MainView(undirectedViewModel: UndirectedViewModel) {
     var zoom by remember { mutableFloatStateOf(1f) }
     val zoomAnimate by animateFloatAsState(zoom, tween(200, 0, LinearOutSlowInEasing))
     var center by remember { mutableStateOf(Offset(0f, 0f)) }

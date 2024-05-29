@@ -7,13 +7,13 @@ import androidx.compose.ui.unit.dp
 import model.graph.UndirectedGraph
 import model.graph.Vertex
 
-class UndirectedViewModel<V>(
-    private val graph: UndirectedGraph<V>,
+class UndirectedViewModel(
+    private val graph: UndirectedGraph,
     showVerticesLabels: Boolean,
-    val groups: HashMap<Vertex<V>, Int> = hashMapOf(),
+    val groups: HashMap<Vertex, Int> = hashMapOf(),
 ) {
-    private val _vertices = hashMapOf<Vertex<V>, VertexViewModel<V>>()
-    private val _adjacencyList = hashMapOf<VertexViewModel<V>, ArrayList<EdgeViewModel<V>>>()
+    private val _vertices = hashMapOf<Vertex, VertexViewModel>()
+    private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
     private val _color = mutableStateOf(Color.Black)
     private val _size = mutableStateOf(10f)
@@ -89,7 +89,7 @@ class UndirectedViewModel<V>(
             )
             _vertices[vertex] = vertexViewModel
 
-            fun setOffsetEdges(vertex: Vertex<V>, from: Offset) {
+            fun setOffsetEdges(vertex: Vertex, from: Offset) {
                 val edges = graph.adjacencyList[vertex] ?: return
                 edges.forEach { edge ->
                     val second = edge.second
@@ -112,7 +112,7 @@ class UndirectedViewModel<V>(
         }
 
         graph.vertices.forEach { vertex ->
-            val arrayList = arrayListOf<EdgeViewModel<V>>()
+            val arrayList = arrayListOf<EdgeViewModel>()
             val vertexVM1 = _vertices[vertex] ?: throw IllegalStateException()
 
             graph.adjacencyList[vertex]?.forEach { edge ->

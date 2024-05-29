@@ -5,9 +5,9 @@ import model.graph.Vertex
 import org.jetbrains.research.ictl.louvain.Link
 import org.jetbrains.research.ictl.louvain.getPartition
 
-class Clustering<V>(graph: Graph<V>) {
-    val ids = hashMapOf<Vertex<V>, Int>()
-    val vIds = hashMapOf<Int, Vertex<V>>()
+class Clustering(graph: Graph) {
+    val ids = hashMapOf<Vertex, Int>()
+    val vIds = hashMapOf<Int, Vertex>()
     val links = mutableListOf<Link>()
 
     init {
@@ -25,7 +25,7 @@ class Clustering<V>(graph: Graph<V>) {
 
     }
 
-    fun calculate(): HashMap<Vertex<V>, Int> {
+    fun calculate(): HashMap<Vertex, Int> {
         val map = getPartition(links, 0)
         val result = map.mapKeys { vIds[it.key]!! }
         return HashMap(result)
