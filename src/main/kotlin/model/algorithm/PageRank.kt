@@ -4,12 +4,12 @@ import model.graph.Graph
 import model.graph.Vertex
 
 class PageRank<V>(
-    private val graph: Graph<V>,
+    private val graph: Graph,
     private val dampingFactor: Double = 0.85,
     private val iterations: Int = 100
 ) {
-    fun computePageRank(topN: Int): List<Pair<Vertex<V>, Double>> {
-        val ranks = mutableMapOf<Vertex<V>, Double>()
+    fun computePageRank(topN: Int): List<Pair<Vertex, Double>> {
+        val ranks = mutableMapOf<Vertex, Double>()
         val vertices = graph.vertices
 
         // Initialize ranks
@@ -18,7 +18,7 @@ class PageRank<V>(
         }
 
         repeat(iterations) {
-            val newRanks = mutableMapOf<Vertex<V>, Double>()
+            val newRanks = mutableMapOf<Vertex, Double>()
 
             vertices.forEach { vertex ->
                 var rankSum = 0.0

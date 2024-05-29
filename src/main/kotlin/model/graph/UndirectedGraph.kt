@@ -1,16 +1,16 @@
 package model.graph
 
-open class UndirectedGraph<V> : Graph<V> {
-    protected val _vertices = hashMapOf<V, Vertex<V>>()
-    protected val _adjacencyList = hashMapOf<Vertex<V>, ArrayList<Edge<V>>>()
+open class UndirectedGraph : Graph {
+    protected val _vertices = hashMapOf<Int, Vertex>()
+    protected val _adjacencyList = hashMapOf<Vertex, ArrayList<Edge>>()
 
-    override val vertices: Collection<Vertex<V>>
+    override val vertices: Collection<Vertex>
         get() = _vertices.values
 
-    override val adjacencyList: HashMap<Vertex<V>, ArrayList<Edge<V>>>
+    override val adjacencyList: HashMap<Vertex, ArrayList<Edge>>
         get() = _adjacencyList
 
-    override fun addVertex(key: V): Vertex<V>? {
+    override fun addVertex(key: Int): Vertex? {
         if (_vertices[key] != null) return null
 
         val vertex = UndirectedVertex(key)
@@ -21,7 +21,7 @@ open class UndirectedGraph<V> : Graph<V> {
         return vertex
     }
 
-    override fun removeVertex(key: V): Vertex<V>? {
+    override fun removeVertex(key: Int): Vertex? {
         val vertex = _vertices[key] ?: return null
 
         _vertices.remove(key)
@@ -45,7 +45,7 @@ open class UndirectedGraph<V> : Graph<V> {
         return _adjacencyList[vertex1]?.last()
     }
 
-    override fun removeEdge(first: V, second: V): Edge<V>? {
+    override fun removeEdge(first: Int, second: Int): Edge? {
         val vertex1 = _vertices[first]
         val vertex2 = _vertices[second]
 
@@ -61,7 +61,7 @@ open class UndirectedGraph<V> : Graph<V> {
         return edge1
     }
 
-    override fun updateVertex(key: V, newKey: V): Vertex<V>? {
+    override fun updateVertex(key: Int, newKey: Int): Vertex? {
         val vertex = _vertices[key] ?: return null
         if (_vertices[newKey] != null) return null
 
@@ -69,13 +69,13 @@ open class UndirectedGraph<V> : Graph<V> {
         return vertex
     }
 
-    fun findVertex(key: V) = _vertices[key]
+    fun findVertex(key: Int) = _vertices[key]
 
-    fun getEdges(vertex: Vertex<V>) = _adjacencyList[vertex]
+    fun getEdges(vertex: Vertex) = _adjacencyList[vertex]
 
-    private data class UndirectedVertex<V>(override var key: V) : Vertex<V>
+    private data class UndirectedVertex(override var key: Int) : Vertex
 
-    private data class UndirectedEdge<V>(override val first: Vertex<V>, override val second: Vertex<V>) : Edge<V> {
+    private data class UndirectedEdge(override val first: Vertex, override val second: Vertex) : Edge {
         override var weight: Long
             get() = 1
             set(value) {}

@@ -3,17 +3,18 @@ package viewModel.graph
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.unit.dp
 import model.graph.UndirectedGraph
 import model.graph.Vertex
 
-class UndirectedViewModel<V>(
-    private val graph: UndirectedGraph<V>,
-    showVerticesLabels: Boolean,
-    val groups: HashMap<Vertex<V>, Int> = hashMapOf(),
+class UndirectedViewModel(
+    private val graph: UndirectedGraph,
+    val showVerticesLabels: Boolean,
+    val groups: HashMap<Vertex, Int> = hashMapOf(),
 ) {
-    private val _vertices = hashMapOf<Vertex<V>, VertexViewModel<V>>()
-    private val _adjacencyList = hashMapOf<VertexViewModel<V>, ArrayList<EdgeViewModel<V>>>()
+    private val _vertices = hashMapOf<Vertex, VertexViewModel>()
+    private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
     private val _color = mutableStateOf(Color.Black)
     private val _size = mutableStateOf(10f)
@@ -72,6 +73,24 @@ class UndirectedViewModel<V>(
         }
     }
 
+    fun createVertex(coordinates: Offset): VertexViewModel? {
+        val vertex = graph.addVertex(graph.vertices.last().key + 1)
+
+        if (vertex == null) return null
+
+        val viewModel = VertexViewModel(
+            showVerticesLabels,
+            vertex,
+            coordinates.x - size,
+            coordinates.y - size,
+            getColor(groups.getOrDefault(vertex, 0)),
+            radius = size.dp
+        )
+
+        _vertices[vertex] = viewModel
+
+        return viewModel
+    }
 
     init {
         graph.vertices.forEachIndexed { i, vertex ->
@@ -89,7 +108,7 @@ class UndirectedViewModel<V>(
             )
             _vertices[vertex] = vertexViewModel
 
-            fun setOffsetEdges(vertex: Vertex<V>, from: Offset) {
+            fun setOffsetEdges(vertex: Vertex, from: Offset) {
                 val edges = graph.adjacencyList[vertex] ?: return
                 edges.forEach { edge ->
                     val second = edge.second
@@ -97,7 +116,7 @@ class UndirectedViewModel<V>(
 
                     val secondVertexViewModel = VertexViewModel(
                         showVerticesLabels,
-                        vertex,
+                        second,
                         (listOf(1f, -1f).random() * (40..90).random().toFloat()) + from.x,
                         (listOf(1f, -1f).random() * (40..90).random().toFloat()) + from.y,
                         getColor(groups.getOrDefault(second, 0)),
@@ -112,7 +131,7 @@ class UndirectedViewModel<V>(
         }
 
         graph.vertices.forEach { vertex ->
-            val arrayList = arrayListOf<EdgeViewModel<V>>()
+            val arrayList = arrayListOf<EdgeViewModel>()
             val vertexVM1 = _vertices[vertex] ?: throw IllegalStateException()
 
             graph.adjacencyList[vertex]?.forEach { edge ->

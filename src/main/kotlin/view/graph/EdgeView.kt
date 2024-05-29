@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.dp
 import viewModel.graph.EdgeViewModel
 
 @Composable
-fun <V> EdgeView(
-    viewModel: EdgeViewModel<V>
+fun EdgeView(
+    viewModel: EdgeViewModel
 ) {
     Canvas(Modifier.fillMaxSize()) {
         drawLine(

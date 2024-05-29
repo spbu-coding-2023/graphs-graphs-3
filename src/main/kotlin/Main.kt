@@ -13,10 +13,10 @@ import view.MainView
 import view.MenuView
 import viewModel.graph.UndirectedViewModel
 
-val AMOUNT_NODES = 500
-val EDGE_CHANGE = 0.05f
+val AMOUNT_NODES = 4
+val EDGE_CHANGE = 100f
 
-val graph = UndirectedGraph<Int>().apply {
+val graph = UndirectedGraph().apply {
     for (i in (0 until AMOUNT_NODES)) {
         addVertex(i)
     }
@@ -39,8 +39,6 @@ fun main() = application {
     var isMinimize by remember { mutableStateOf(false) }
     var position: WindowPosition by remember { mutableStateOf(WindowPosition.PlatformDefault) }
     var headerName by remember { mutableStateOf("Dimabase.db") }
-
-    var isClustering by remember { mutableStateOf(false) }
 
     val windowState = WindowState(
         placement = if (isMaximized) WindowPlacement.Maximized else WindowPlacement.Floating,
