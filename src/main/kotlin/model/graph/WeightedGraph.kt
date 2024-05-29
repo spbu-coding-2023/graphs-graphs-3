@@ -1,8 +1,8 @@
 package model.graph
 
-class WeightedGraph<V>: UndirectedGraph<V>() {
+class WeightedGraph : UndirectedGraph() {
 
-    override fun addEdge(first: V, second: V, weight: Long): Edge<V>? {
+    override fun addEdge(first: Int, second: Int, weight: Long): Edge? {
 
         val vertex1 = _vertices[first] ?: return null
         val vertex2 = _vertices[second] ?: return null
@@ -26,7 +26,7 @@ class WeightedGraph<V>: UndirectedGraph<V>() {
         return edge1
     }
 
-    private fun addNewEdge(vertex1: Vertex<V>, vertex2: Vertex<V>, weight: Long): Edge<V>?{
+    private fun addNewEdge(vertex1: Vertex, vertex2: Vertex, weight: Long): Edge? {
 
         _adjacencyList[vertex1]?.add(WeightedEdge(vertex1, vertex2, weight))
         _adjacencyList[vertex2]?.add(WeightedEdge(vertex2, vertex1, weight))
@@ -34,8 +34,10 @@ class WeightedGraph<V>: UndirectedGraph<V>() {
         return _adjacencyList[vertex1]?.last()
     }
 
-    private data class WeightedEdge<V>(override val first: Vertex<V>, override val second: Vertex<V>,
-                                       override var weight: Long) : Edge<V>
+    private data class WeightedEdge(
+        override val first: Vertex, override val second: Vertex,
+        override var weight: Long
+    ) : Edge
 
 }
 
