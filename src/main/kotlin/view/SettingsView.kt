@@ -63,7 +63,7 @@ fun SettingsView(onColorChange: (Color) -> Unit, onSizeChange: (Float) -> Unit, 
                         MySlider("R: ", redSlider)
                         MySlider("G: ", greenSlider)
                         MySlider("B: ", blueSlider)
-                        MySlider("Size: ", sizeSlider, (5f..40f))
+                        MySlider("Size: ", sizeSlider, (5f..80f))
                     }
                 }
 
