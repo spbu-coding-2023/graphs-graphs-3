@@ -9,6 +9,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
@@ -40,6 +41,8 @@ fun MainView(undirectedViewModel: UndirectedViewModel) {
     var isOrientated by remember { mutableStateOf(false) }
     var isClustering by remember { mutableStateOf(false) }
     var isNodeCreatingMode by remember { mutableStateOf(false) }
+
+    var update = mutableStateOf(false)
 
     undirectedViewModel.clustering = isClustering
 
@@ -75,6 +78,13 @@ fun MainView(undirectedViewModel: UndirectedViewModel) {
                         matcher = PointerMatcher.Primary
                     ) {
                         center -= it * (1 / zoom)
+                    }
+                }.pointerInput(Unit) {
+                    detectTapGestures {
+                        if (isNodeCreatingMode) {
+                            canvasViewModel.createVertex(it - (canvasSize / 2f))
+                            zoom += 0.000001f // костыль для рекомпозиции
+                        }
                     }
                 }.pointerHoverIcon(PointerIcon.Hand)
                 .onSizeChanged {

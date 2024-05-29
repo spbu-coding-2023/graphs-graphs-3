@@ -19,7 +19,7 @@ fun CanvasView(
             EdgeCanvasView(it)
         }
 
-        viewModel.getViews().forEach {
+        viewModel.vertices.forEach {
             VertexCanvasView(it)
         }
     }

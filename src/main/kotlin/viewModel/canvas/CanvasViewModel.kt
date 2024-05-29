@@ -2,10 +2,11 @@ package viewModel.canvas
 
 import androidx.compose.ui.geometry.Offset
 import viewModel.graph.UndirectedViewModel
+import viewModel.graph.VertexViewModel
 import kotlin.math.abs
 
 class CanvasViewModel(
-    graphViewModel: UndirectedViewModel,
+    val graphViewModel: UndirectedViewModel,
     var zoom: Float,
     var center: Offset,
     var canvasSize: Offset,
@@ -13,7 +14,7 @@ class CanvasViewModel(
 ) {
     private val _vertices = graphViewModel.vertices.associateWith { v ->
         VertexCanvasViewModel(v, zoom, center, canvasSize)
-    }
+    }.toMutableMap()
 
     private val _edges = graphViewModel.adjacencyList.map { it.value }.flatten().map {
         val vertex1 =
@@ -36,5 +37,12 @@ class CanvasViewModel(
         }
 
         return _vertices.values
+    }
+
+    fun createVertex(offset: Offset) {
+        val coordinates = offset * zoom + center
+        val viewModel = graphViewModel.createVertex(coordinates) ?: return
+
+        _vertices[viewModel] = VertexCanvasViewModel(viewModel, zoom, center, canvasSize)
     }
 }

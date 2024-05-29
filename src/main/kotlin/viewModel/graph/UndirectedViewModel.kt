@@ -3,13 +3,14 @@ package viewModel.graph
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.unit.dp
 import model.graph.UndirectedGraph
 import model.graph.Vertex
 
 class UndirectedViewModel(
     private val graph: UndirectedGraph,
-    showVerticesLabels: Boolean,
+    val showVerticesLabels: Boolean,
     val groups: HashMap<Vertex, Int> = hashMapOf(),
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
@@ -72,6 +73,24 @@ class UndirectedViewModel(
         }
     }
 
+    fun createVertex(coordinates: Offset): VertexViewModel? {
+        val vertex = graph.addVertex(graph.vertices.last().key + 1)
+
+        if (vertex == null) return null
+
+        val viewModel = VertexViewModel(
+            showVerticesLabels,
+            vertex,
+            coordinates.x - size,
+            coordinates.y - size,
+            getColor(groups.getOrDefault(vertex, 0)),
+            radius = size.dp
+        )
+
+        _vertices[vertex] = viewModel
+
+        return viewModel
+    }
 
     init {
         graph.vertices.forEachIndexed { i, vertex ->
