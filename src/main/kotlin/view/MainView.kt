@@ -36,11 +36,12 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
     val centerAnimate by animateOffsetAsState(center, tween(200, 0, LinearOutSlowInEasing))
     var canvasSize by remember { mutableStateOf(Offset(400f, 400f)) }
 
+    var isOrientated by remember { mutableStateOf(false) }
     var isClustering by remember { mutableStateOf(false) }
     undirectedViewModel.clustering = isClustering
 
     val canvasViewModel =
-        CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
+        CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize, isOrientated)
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
         MenuView { isClustering = !isClustering }
@@ -78,6 +79,7 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
 
     SettingsView(
         undirectedViewModel::onColorChange,
-        undirectedViewModel::onSizeChange
+        undirectedViewModel::onSizeChange,
+        { isOrientated = !isOrientated }
     )
 }

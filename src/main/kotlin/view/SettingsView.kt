@@ -39,18 +39,19 @@ fun MySlider(text: String, state: MutableState<Float>, range: ClosedFloatingPoin
 
 
 @Composable
-fun SettingsView(onColorChange: (Color) -> Unit, onSizeChange: (Float) -> Unit) {
+fun SettingsView(onColorChange: (Color) -> Unit, onSizeChange: (Float) -> Unit, onOrientatedChange: () -> Unit) {
     val redSlider = remember { mutableStateOf(1f / (0xFF / 0x8F)) }
     val greenSlider = remember { mutableStateOf(0f) }
     val blueSlider = remember { mutableStateOf(1f) }
     val sizeSlider = remember { mutableStateOf(35f) }
+    val orientatedCheckBox = remember { mutableStateOf(false) }
 
     onColorChange(Color(red = redSlider.value, green = greenSlider.value, blue = blueSlider.value))
     onSizeChange(sizeSlider.value)
 
     Box(Modifier.fillMaxSize().padding(top = 80f.dp, end = 20f.dp).zIndex(10f), contentAlignment = Alignment.TopEnd) {
         Box(
-            Modifier.size(270f.dp, 270f.dp).background(Color(0xFF3D3D3D), RoundedCornerShape(10))
+            Modifier.size(270f.dp, 320f.dp).background(Color(0xFF3D3D3D), RoundedCornerShape(10))
         ) {
             Column {
                 Row(Modifier.fillMaxWidth().padding(top = 10f.dp), horizontalArrangement = Arrangement.Center) {
@@ -64,6 +65,17 @@ fun SettingsView(onColorChange: (Color) -> Unit, onSizeChange: (Float) -> Unit) 
                         MySlider("B: ", blueSlider)
                         MySlider("Size: ", sizeSlider, (5f..40f))
                     }
+                }
+
+                Row(
+                    Modifier.fillMaxWidth().padding(start = 20f.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    MyText("Orientated")
+                    Checkbox(orientatedCheckBox.value, onCheckedChange = {
+                        onOrientatedChange()
+                        orientatedCheckBox.value = !orientatedCheckBox.value
+                    })
                 }
             }
         }
