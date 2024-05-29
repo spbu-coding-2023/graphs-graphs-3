@@ -10,6 +10,7 @@ import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -38,13 +39,19 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
 
     var isOrientated by remember { mutableStateOf(false) }
     var isClustering by remember { mutableStateOf(false) }
+    var isNodeCreatingMode by remember { mutableStateOf(false) }
+
     undirectedViewModel.clustering = isClustering
 
     val canvasViewModel =
         CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize, isOrientated)
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
-        MenuView { isClustering = !isClustering }
+        MenuView(
+            isNodeCreatingMode,
+            { isNodeCreatingMode = !isNodeCreatingMode },
+            isClustering,
+            { isClustering = !isClustering })
         CanvasView(
             canvasViewModel,
             Modifier
