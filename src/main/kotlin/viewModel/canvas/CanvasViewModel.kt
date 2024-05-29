@@ -20,7 +20,7 @@ class CanvasViewModel<V>(
         val vertex2 =
             _vertices[it.second] ?: throw IllegalStateException("There is no VertexCanvasViewModel for ${it.second}")
 
-        EdgeCanvasViewModel(vertex1, vertex2)
+        EdgeCanvasViewModel(vertex1, vertex2, it.color, it.strokeWidth, zoom)
     }
 
     val vertices

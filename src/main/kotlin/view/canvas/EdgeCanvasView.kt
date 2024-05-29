@@ -15,17 +15,48 @@ fun <V> EdgeCanvasView(
     modifier: Modifier = Modifier
 ) {
     Canvas(Modifier.fillMaxSize()) {
-        drawLine(
-            start = Offset(
-                viewModel.first.offset.x.dp.toPx() + viewModel.first.radius.toPx(),
-                viewModel.first.offset.y.dp.toPx() + viewModel.first.radius.toPx(),
-            ),
-            end = Offset(
-                viewModel.second.offset.x.dp.toPx() + viewModel.second.radius.toPx(),
-                viewModel.second.offset.y.dp.toPx() + viewModel.second.radius.toPx(),
-            ),
-            color = Color.Black,
-            strokeWidth = 1f.dp.toPx()
-        )
+        // something hard thing for drawing edge from border of node, not from center
+        val firstCenter = viewModel.first.offset + Offset(viewModel.first.radius.value, viewModel.first.radius.value)
+        val secondCenter =
+            viewModel.second.offset + Offset(viewModel.second.radius.value, viewModel.second.radius.value)
+
+        val vector = (secondCenter - firstCenter)
+        val vectorNorm = vector / vector.getDistance()
+        val radiusVector = vectorNorm * viewModel.first.radius.value
+
+        val start = firstCenter + radiusVector
+        val end = secondCenter - radiusVector
+
+        if ((secondCenter - firstCenter).getDistance() > viewModel.first.radius.value + viewModel.second.radius.value) {
+            drawLine(
+                start = start,
+                end = end,
+                color = viewModel.color,
+                strokeWidth = viewModel.strokeWidth.dp.toPx()
+            )
+        }
+
+        if (viewModel.showOrientation) {
+            drawLine(
+                start = end,
+                end = end - rotateVector(radiusVector * 0.8f, 30.0),
+                color = viewModel.color,
+                strokeWidth = viewModel.strokeWidth * 0.8f
+            )
+
+            drawLine(
+                start = end,
+                end = end - rotateVector(radiusVector * 0.8f, -30.0),
+                color = viewModel.color,
+                strokeWidth = viewModel.strokeWidth * 0.8f
+            )
+        }
     }
+}
+
+fun rotateVector(vec: Offset, angle: Double): Offset {
+    val radians = Math.toRadians(angle)
+    val cos = Math.cos(radians).toFloat()
+    val sin = Math.sin(radians).toFloat()
+    return Offset(vec.x * cos - sin * vec.y, sin * vec.x + cos * vec.y)
 }
