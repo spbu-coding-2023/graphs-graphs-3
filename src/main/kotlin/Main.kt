@@ -7,14 +7,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import model.algorithm.Clustering
+import model.algorithm.PageRank
 import model.graph.UndirectedGraph
 import view.HeaderView
 import view.MainView
 import view.MenuView
 import viewModel.graph.UndirectedViewModel
 
-val AMOUNT_NODES = 4
-val EDGE_CHANGE = 100f
+val AMOUNT_NODES = 16
+val EDGE_CHANGE = 5f
 
 val graph = UndirectedGraph().apply {
     for (i in (0 until AMOUNT_NODES)) {
@@ -31,6 +32,7 @@ val graph = UndirectedGraph().apply {
 }
 
 val groups = Clustering(graph).calculate()
+val ranks = PageRank(graph).computePageRank(3)
 val undirectedViewModel = UndirectedViewModel(graph, false, groups)
 
 fun main() = application {
