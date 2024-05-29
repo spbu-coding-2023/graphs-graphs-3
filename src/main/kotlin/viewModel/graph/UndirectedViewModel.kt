@@ -12,6 +12,7 @@ class UndirectedViewModel(
     private val graph: UndirectedGraph,
     val showVerticesLabels: Boolean,
     val groups: HashMap<Vertex, Int> = hashMapOf(),
+    val ranks: List<Pair<Vertex, Double>>
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
@@ -19,6 +20,7 @@ class UndirectedViewModel(
     private val _color = mutableStateOf(Color.Black)
     private val _size = mutableStateOf(10f)
     private val _clustering = mutableStateOf(false)
+    private val _ranked = mutableStateOf(false)
 
     private var size
         get() = _size.value
@@ -37,6 +39,13 @@ class UndirectedViewModel(
         set(value) {
             _clustering.value = value
             updateColor()
+        }
+
+    var ranked
+        get() = _ranked.value
+        set(value) {
+            _ranked.value = value
+            updateSizes()
         }
 
     private fun getColor(group: Int): Color {
@@ -59,6 +68,20 @@ class UndirectedViewModel(
         _vertices.forEach {
             it.value.color = getColor(groups.getOrDefault(it.key, 0))
         }
+    }
+
+    fun updateSizes() {
+        if (ranked) {
+            ranks.forEach {
+                val vertex = _vertices[it.first] ?: return
+
+                vertex.radius = (vertex.radius.value * 2f).dp
+            }
+
+            return
+        }
+
+        _vertices.forEach { it.value.radius = size.dp }
     }
 
     fun onColorChange(color: Color) {

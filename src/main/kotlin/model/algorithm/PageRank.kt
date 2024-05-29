@@ -3,7 +3,7 @@ package model.algorithm
 import model.graph.Graph
 import model.graph.Vertex
 
-class PageRank<V>(
+class PageRank(
     private val graph: Graph,
     private val dampingFactor: Double = 0.85,
     private val iterations: Int = 100

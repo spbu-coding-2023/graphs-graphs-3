@@ -22,10 +22,11 @@ fun EdgeCanvasView(
 
         val vector = (secondCenter - firstCenter)
         val vectorNorm = vector / vector.getDistance()
-        val radiusVector = vectorNorm * viewModel.first.radius.value
+        val radiusVectorFirst = vectorNorm * viewModel.first.radius.value
+        val radiusVectorSecond = vectorNorm * viewModel.second.radius.value
 
-        val start = firstCenter + radiusVector
-        val end = secondCenter - radiusVector
+        val start = firstCenter + radiusVectorFirst
+        val end = secondCenter - radiusVectorSecond
 
         if ((secondCenter - firstCenter).getDistance() > viewModel.first.radius.value + viewModel.second.radius.value) {
             drawLine(
@@ -39,14 +40,14 @@ fun EdgeCanvasView(
         if (viewModel.showOrientation) {
             drawLine(
                 start = end,
-                end = end - rotateVector(radiusVector * 0.8f, 30.0),
+                end = end - rotateVector(radiusVectorSecond * 0.8f, 30.0),
                 color = viewModel.color,
                 strokeWidth = viewModel.strokeWidth * 0.8f
             )
 
             drawLine(
                 start = end,
-                end = end - rotateVector(radiusVector * 0.8f, -30.0),
+                end = end - rotateVector(radiusVectorSecond * 0.8f, -30.0),
                 color = viewModel.color,
                 strokeWidth = viewModel.strokeWidth * 0.8f
             )

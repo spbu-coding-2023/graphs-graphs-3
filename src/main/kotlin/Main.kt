@@ -33,7 +33,7 @@ val graph = UndirectedGraph().apply {
 
 val groups = Clustering(graph).calculate()
 val ranks = PageRank(graph).computePageRank(3)
-val undirectedViewModel = UndirectedViewModel(graph, false, groups)
+val undirectedViewModel = UndirectedViewModel(graph, false, groups, ranks)
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }

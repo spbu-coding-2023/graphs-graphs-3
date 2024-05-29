@@ -40,11 +40,11 @@ fun MainView(undirectedViewModel: UndirectedViewModel) {
 
     var isOrientated by remember { mutableStateOf(false) }
     var isClustering by remember { mutableStateOf(false) }
+    var isRanked by remember { mutableStateOf(false) }
     var isNodeCreatingMode by remember { mutableStateOf(false) }
 
-    var update = mutableStateOf(false)
-
     undirectedViewModel.clustering = isClustering
+    undirectedViewModel.ranked = isRanked
 
     val canvasViewModel =
         CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize, isOrientated)
@@ -54,7 +54,9 @@ fun MainView(undirectedViewModel: UndirectedViewModel) {
             isNodeCreatingMode,
             { isNodeCreatingMode = !isNodeCreatingMode },
             isClustering,
-            { isClustering = !isClustering })
+            { isClustering = !isClustering },
+            isRanked,
+            { isRanked = !isRanked })
         CanvasView(
             canvasViewModel,
             Modifier
