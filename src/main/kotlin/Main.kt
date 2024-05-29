@@ -10,6 +10,7 @@ import model.algorithm.Clustering
 import model.graph.UndirectedGraph
 import view.HeaderView
 import view.MainView
+import view.MenuView
 import viewModel.graph.UndirectedViewModel
 
 val AMOUNT_NODES = 500
@@ -30,7 +31,7 @@ val graph = UndirectedGraph<Int>().apply {
 }
 
 val groups = Clustering(graph).calculate()
-val undirectedViewModel = UndirectedViewModel(graph, false)
+val undirectedViewModel = UndirectedViewModel(graph, false, groups)
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }
@@ -38,6 +39,8 @@ fun main() = application {
     var isMinimize by remember { mutableStateOf(false) }
     var position: WindowPosition by remember { mutableStateOf(WindowPosition.PlatformDefault) }
     var headerName by remember { mutableStateOf("Dimabase.db") }
+
+    var isClustering by remember { mutableStateOf(false) }
 
     val windowState = WindowState(
         placement = if (isMaximized) WindowPlacement.Maximized else WindowPlacement.Floating,

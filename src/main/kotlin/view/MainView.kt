@@ -36,17 +36,18 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
     val centerAnimate by animateOffsetAsState(center, tween(200, 0, LinearOutSlowInEasing))
     var canvasSize by remember { mutableStateOf(Offset(400f, 400f)) }
 
+    var isClustering by remember { mutableStateOf(false) }
+    undirectedViewModel.clustering = isClustering
+
     val canvasViewModel =
         CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
-        MenuView()
-
+        MenuView { isClustering = !isClustering }
         CanvasView(
             canvasViewModel,
             Modifier
                 .fillMaxSize()
-                .border(1f.dp, Color.Red)
                 .onPointerEvent(PointerEventType.Scroll) {
                     if (it.changes.first().scrollDelta.y > 0) {
                         zoom -= zoom / 8

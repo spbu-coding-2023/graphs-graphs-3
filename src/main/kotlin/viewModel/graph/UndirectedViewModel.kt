@@ -17,6 +17,7 @@ class UndirectedViewModel<V>(
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
     private val _color = mutableStateOf(Color.Black)
     private val _size = mutableStateOf(10f)
+    private val _clustering = mutableStateOf(false)
 
     private var size
         get() = _size.value
@@ -30,8 +31,15 @@ class UndirectedViewModel<V>(
     val adjacencyList
         get() = _adjacencyList
 
+    var clustering
+        get() = _clustering.value
+        set(value) {
+            _clustering.value = value
+            updateColor()
+        }
+
     private fun getColor(group: Int): Color {
-        if (group > 0) {
+        if (clustering) {
             val color = groupColors[group]
 
             if (color == null) {
@@ -46,15 +54,15 @@ class UndirectedViewModel<V>(
         return _color.value
     }
 
-    fun onColorChange(color: Color) {
-        if (groups.size > 0) {
-            return
-        }
-
-        _color.value = color
+    fun updateColor() {
         _vertices.forEach {
-            it.value.color = _color.value
+            it.value.color = getColor(groups.getOrDefault(it.key, 0))
         }
+    }
+
+    fun onColorChange(color: Color) {
+        _color.value = color
+        updateColor()
     }
 
     fun onSizeChange(newSize: Float) {
