@@ -4,35 +4,42 @@ import model.graph.DirectedGraph
 import model.graph.UndirectedGraph
 import org.junit.jupiter.api.Assertions.assertNotNull
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class BetweennesCentralityTest {
 
     @Test
-    fun basic() {
-        val graph = UndirectedGraph<Int>()
-        for (i in 0..9) {
+    fun basicDirectedGraph() {
+        val graph = DirectedGraph<Int>()
+        for (i in 0..3) {
             graph.addVertex(i)
         }
+        graph.addEdge(0, 1)
+        graph.addEdge(0, 2)
         graph.addEdge(1, 2)
-        graph.addEdge(1, 3)
-        graph.addEdge(1, 4)
-        graph.addEdge(2, 3)
-        graph.addEdge(2, 4)
-        graph.addEdge(3, 4)
-        graph.addEdge(2, 5)
-        graph.addEdge(4, 5)
-        graph.addEdge(5, 6)
-        graph.addEdge(5, 7)
-        graph.addEdge(6, 7)
-        graph.addEdge(6, 8)
-        graph.addEdge(6, 9)
-        graph.addEdge(7, 8)
-        graph.addEdge(7, 9)
-        graph.addEdge(8, 9)
-        val centrality = PageRank(graph).computePageRank(2)
-        for ((vertex, value) in centrality) {
-            println("Vertex: $vertex, Betweenness Centrality: $value")
-        }
+        graph.addEdge(3, 2)
+        graph.addEdge(2 ,0)
+
+        val centrality = PageRank(graph).computePageRank(1)
+
         assertNotNull(centrality)
+        assertEquals(centrality[0].first.key, 2)
+    }
+
+    @Test
+    fun basicUndirectedGraph() {
+        val graph = UndirectedGraph<Int>()
+        for (i in 0..3) {
+            graph.addVertex(i)
+        }
+        graph.addEdge(0, 1)
+        graph.addEdge(0, 2)
+        graph.addEdge(1, 2)
+        graph.addEdge(3, 2)
+
+        val centrality = PageRank(graph).computePageRank(1)
+
+        assertNotNull(centrality)
+        assertEquals(centrality[0].first.key, 2)
     }
 }
