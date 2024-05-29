@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import viewModel.graph.VertexViewModel
 
 @Composable
-fun <V> VertexView(
-    viewModel: VertexViewModel<V>,
+fun VertexView(
+    viewModel: VertexViewModel,
     modifier: Modifier = Modifier
 ) {
     Box(

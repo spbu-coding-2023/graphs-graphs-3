@@ -1,7 +1,7 @@
 package model.graph
 
-interface Edge <V> {
-    val first: Vertex<V>
-    val second: Vertex<V>
+interface Edge {
+    val first: Vertex
+    val second: Vertex
     var weight: Long
 }

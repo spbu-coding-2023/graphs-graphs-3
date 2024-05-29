@@ -7,9 +7,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import model.graph.Vertex
 
-class VertexViewModel<V>(
+class VertexViewModel(
     private val _labelVisible: Boolean,
-    private val vertex: Vertex<V>,
+    private val vertex: Vertex,
     x: Float = 0f,
     y: Float = 0f,
     color: Color = Color.Black,

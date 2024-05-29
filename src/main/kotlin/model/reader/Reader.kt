@@ -3,6 +3,6 @@ package model.reader
 import model.graph.Graph
 
 interface Reader {
-    fun saveGraph(graph: Graph<Int>, filepath: String): Unit
-    fun loadGraph(filepath: String): Graph<Int>
+    fun saveGraph(graph: Graph, filepath: String): Unit
+    fun loadGraph(filepath: String): Graph
 }

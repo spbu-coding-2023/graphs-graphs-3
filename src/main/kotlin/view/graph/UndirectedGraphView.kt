@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import viewModel.graph.UndirectedViewModel
 
 @Composable
-fun <V> UndirectedGraphView(
-    viewModel: UndirectedViewModel<V>
+fun UndirectedGraphView(
+    viewModel: UndirectedViewModel
 ) {
     Box(Modifier.fillMaxSize()) {
         viewModel.vertices.forEach { v ->

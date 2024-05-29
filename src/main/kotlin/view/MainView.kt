@@ -9,7 +9,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -29,21 +31,30 @@ val MENU_WIDTH = Config.menuWidth
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
+fun MainView(undirectedViewModel: UndirectedViewModel) {
     var zoom by remember { mutableFloatStateOf(1f) }
     val zoomAnimate by animateFloatAsState(zoom, tween(200, 0, LinearOutSlowInEasing))
     var center by remember { mutableStateOf(Offset(0f, 0f)) }
     val centerAnimate by animateOffsetAsState(center, tween(200, 0, LinearOutSlowInEasing))
     var canvasSize by remember { mutableStateOf(Offset(400f, 400f)) }
 
+    var isOrientated by remember { mutableStateOf(false) }
     var isClustering by remember { mutableStateOf(false) }
+    var isNodeCreatingMode by remember { mutableStateOf(false) }
+
+    var update = mutableStateOf(false)
+
     undirectedViewModel.clustering = isClustering
 
     val canvasViewModel =
-        CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize)
+        CanvasViewModel(undirectedViewModel, zoomAnimate, centerAnimate, canvasSize, isOrientated)
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
-        MenuView { isClustering = !isClustering }
+        MenuView(
+            isNodeCreatingMode,
+            { isNodeCreatingMode = !isNodeCreatingMode },
+            isClustering,
+            { isClustering = !isClustering })
         CanvasView(
             canvasViewModel,
             Modifier
@@ -68,6 +79,13 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
                     ) {
                         center -= it * (1 / zoom)
                     }
+                }.pointerInput(Unit) {
+                    detectTapGestures {
+                        if (isNodeCreatingMode) {
+                            canvasViewModel.createVertex(it - (canvasSize / 2f))
+                            zoom += 0.000001f // костыль для рекомпозиции
+                        }
+                    }
                 }.pointerHoverIcon(PointerIcon.Hand)
                 .onSizeChanged {
                     canvasSize = Offset(it.width.toFloat(), it.height.toFloat())
@@ -78,6 +96,7 @@ fun <V> MainView(undirectedViewModel: UndirectedViewModel<V>) {
 
     SettingsView(
         undirectedViewModel::onColorChange,
-        undirectedViewModel::onSizeChange
+        undirectedViewModel::onSizeChange,
+        { isOrientated = !isOrientated }
     )
 }

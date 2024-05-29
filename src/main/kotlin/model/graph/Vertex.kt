@@ -1,5 +1,5 @@
 package model.graph
 
-interface Vertex<V> {
-    var key: V
+interface Vertex {
+    var key: Int
 }
