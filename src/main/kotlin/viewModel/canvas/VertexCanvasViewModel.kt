@@ -1,6 +1,7 @@
 package viewModel.canvas
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import viewModel.graph.VertexViewModel
 
 class VertexCanvasViewModel<V>(
@@ -16,6 +17,8 @@ class VertexCanvasViewModel<V>(
 
     val radius = viewModel.radius * zoom
     val color = viewModel.color
+    val strokeWidth = (3f * zoom)
+    val textSize = (viewModel.radius * 0.8f * zoom)
 
     fun onDrag(it: Offset): Unit {
         viewModel.onDrag(it * (1f / zoom))

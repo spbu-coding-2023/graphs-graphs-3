@@ -40,10 +40,10 @@ fun MySlider(text: String, state: MutableState<Float>, range: ClosedFloatingPoin
 
 @Composable
 fun SettingsView(onColorChange: (Color) -> Unit, onSizeChange: (Float) -> Unit) {
-    val redSlider = remember { mutableStateOf(0f) }
+    val redSlider = remember { mutableStateOf(1f / (0xFF / 0x8F)) }
     val greenSlider = remember { mutableStateOf(0f) }
-    val blueSlider = remember { mutableStateOf(0f) }
-    val sizeSlider = remember { mutableStateOf(10f) }
+    val blueSlider = remember { mutableStateOf(1f) }
+    val sizeSlider = remember { mutableStateOf(35f) }
 
     onColorChange(Color(red = redSlider.value, green = greenSlider.value, blue = blueSlider.value))
     onSizeChange(sizeSlider.value)
