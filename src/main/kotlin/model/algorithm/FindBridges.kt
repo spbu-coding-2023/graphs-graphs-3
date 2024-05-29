@@ -4,15 +4,15 @@ package model.algorithm
 import model.graph.*
 
 
-class FindBridges<V>(
-    private val graph: Graph<V>
+class FindBridges(
+    private val graph: Graph
 ) {
-    fun findBridges(): List<Edge<V>> {
-        val visited = mutableMapOf<Vertex<V>, Boolean>()
-        val disc = mutableMapOf<Vertex<V>, Int>()
-        val low = mutableMapOf<Vertex<V>, Int>()
-        val parent = mutableMapOf<Vertex<V>, Vertex<V>?>()
-        val bridges = mutableListOf<Edge<V>>()
+    fun findBridges(): List<Edge> {
+        val visited = mutableMapOf<Vertex, Boolean>()
+        val disc = mutableMapOf<Vertex, Int>()
+        val low = mutableMapOf<Vertex, Int>()
+        val parent = mutableMapOf<Vertex, Vertex?>()
+        val bridges = mutableListOf<Edge>()
         var time = 0
 
         graph.vertices.forEach { vertex ->
@@ -25,12 +25,12 @@ class FindBridges<V>(
     }
 
     private fun findBridgesUtil(
-        u: Vertex<V>,
-        visited: MutableMap<Vertex<V>, Boolean>,
-        disc: MutableMap<Vertex<V>, Int>,
-        low: MutableMap<Vertex<V>, Int>,
-        parent: MutableMap<Vertex<V>, Vertex<V>?>,
-        bridges: MutableList<Edge<V>>,
+        u: Vertex,
+        visited: MutableMap<Vertex, Boolean>,
+        disc: MutableMap<Vertex, Int>,
+        low: MutableMap<Vertex, Int>,
+        parent: MutableMap<Vertex, Vertex?>,
+        bridges: MutableList<Edge>,
         time: Int
     ) {
         var currentTime = time
