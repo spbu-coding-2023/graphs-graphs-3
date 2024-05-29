@@ -40,7 +40,6 @@ class CanvasViewModel(
     }
 
     fun createVertex(offset: Offset, center: Offset, zoom: Float) {
-        println(center)
         val coordinates = offset * (1 / zoom) + center
         val viewModel = graphViewModel.createVertex(coordinates) ?: return
 

@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HeaderView(name: String, close: () -> Unit, maximize: () -> Unit, isMaximize: Boolean, minimize: () -> Unit) {
-    println("HeaderView")
     Row(
         Modifier.fillMaxWidth().height(Config.headerHeight.dp)
             .background(color = Color(0xFF3D3D3D))

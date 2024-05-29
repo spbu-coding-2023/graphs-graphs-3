@@ -30,7 +30,6 @@ fun MenuView(
     isClustering: Boolean,
     onClusteringChange: () -> Unit
 ) {
-    println("MenuView")
     Column(
         Modifier.fillMaxHeight().width(Config.menuWidth.dp).background(color = Color(0xFF3D3D3D)),
         horizontalAlignment = Alignment.CenterHorizontally,
