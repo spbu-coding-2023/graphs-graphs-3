@@ -17,8 +17,8 @@ class VertexCanvasViewModel<V>(
 
     val radius = viewModel.radius * zoom
     val color = viewModel.color
-    val strokeWidth = (3f * zoom)
-    val textSize = (viewModel.radius * 0.8f * zoom)
+    val strokeWidth = (8f * zoom)
+    val textSize = (viewModel.radius * 0.6f * zoom)
 
     fun onDrag(it: Offset): Unit {
         viewModel.onDrag(it * (1f / zoom))
