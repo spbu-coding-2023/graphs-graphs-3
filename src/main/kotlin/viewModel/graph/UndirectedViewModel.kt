@@ -97,7 +97,7 @@ class UndirectedViewModel<V>(
 
                     val secondVertexViewModel = VertexViewModel(
                         showVerticesLabels,
-                        vertex,
+                        second,
                         (listOf(1f, -1f).random() * (40..90).random().toFloat()) + from.x,
                         (listOf(1f, -1f).random() * (40..90).random().toFloat()) + from.y,
                         getColor(groups.getOrDefault(second, 0)),
