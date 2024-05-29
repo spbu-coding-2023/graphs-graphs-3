@@ -30,6 +30,10 @@ class CanvasViewModel<V>(
         get() = _edges
 
     fun getViews(): Collection<VertexCanvasViewModel<V>> {
-        return _vertices.filter { abs(it.value.offset.x) < canvasSize.x && abs(it.value.offset.y) < canvasSize.y }.values
+        if (Config.optimizeCanvas) {
+            return _vertices.filter { abs(it.value.offset.x) < canvasSize.x && abs(it.value.offset.y) < canvasSize.y }.values
+        }
+
+        return _vertices.values
     }
 }
