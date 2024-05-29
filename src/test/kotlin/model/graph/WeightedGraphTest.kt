@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class WeightedGraphTest: UndirectedGraphTest() {
+class WeightedGraphTest {
+    lateinit var graph: WeightedGraph<Int>
 
     @Nested
     inner class addEdge {
