@@ -7,12 +7,12 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class DirectedGraphTest {
-    val graph = DirectedGraph<Int>()
+    val graph = DirectedGraph()
 
-    fun Graph<Int>.findVertex(key: Int) = this.vertices.find { it.key == key }
-    fun Graph<Int>.findEdge(key1: Int, key2: Int) = this.adjacencyList[findVertex(key1)]?.find { it.second.key == key2 }
+    fun Graph.findVertex(key: Int) = this.vertices.find { it.key == key }
+    fun Graph.findEdge(key1: Int, key2: Int) = this.adjacencyList[findVertex(key1)]?.find { it.second.key == key2 }
 
-    fun Graph<Int>.checkExistingDirectedEdge(key1: Int, key2: Int) {
+    fun Graph.checkExistingDirectedEdge(key1: Int, key2: Int) {
         val edge1 = this.findEdge(key1, key2)
 
         assertNotNull(edge1)

@@ -10,8 +10,8 @@ class FindBridgesTest {
     @Nested
     inner class `find bridges in directed graph` {
         @Test
-        fun `class base test`(){
-            val graph = DirectedGraph<Int>()
+        fun `class base test`() {
+            val graph = DirectedGraph()
 
             graph.addVertex(1)
             graph.addVertex(2)
@@ -32,9 +32,10 @@ class FindBridgesTest {
 
             assertEquals(Pair(bridges[0].first.key, bridges[0].second.key), Pair(1, 4))
         }
+
         @Test
         fun `crossing multiple bridges`() {
-            val graph = DirectedGraph<Int>()
+            val graph = DirectedGraph()
 
             graph.addVertex(1)
             graph.addVertex(2)
@@ -56,8 +57,10 @@ class FindBridgesTest {
             val bridges = FindBridges(graph).findBridges()
 
             assertEquals(
-                listOf(Pair(bridges[0].first.key, bridges[0].second.key),
-                    Pair(bridges[1].first.key, bridges[1].second.key)),
+                listOf(
+                    Pair(bridges[0].first.key, bridges[0].second.key),
+                    Pair(bridges[1].first.key, bridges[1].second.key)
+                ),
                 listOf(Pair(4, 5), Pair(1, 4))
             )
         }
@@ -66,8 +69,8 @@ class FindBridgesTest {
     @Nested
     inner class `find bridges in undirected graph` {
         @Test
-        fun `class base test`(){
-            val graph = UndirectedGraph<Int>()
+        fun `class base test`() {
+            val graph = UndirectedGraph()
 
             graph.addVertex(1)
             graph.addVertex(2)
@@ -88,9 +91,10 @@ class FindBridgesTest {
 
             assertEquals(Pair(bridges[0].first.key, bridges[0].second.key), Pair(1, 4))
         }
+
         @Test
         fun `crossing multiple bridges`() {
-            val graph = UndirectedGraph<Int>()
+            val graph = UndirectedGraph()
 
             graph.addVertex(1)
             graph.addVertex(2)
@@ -112,8 +116,10 @@ class FindBridgesTest {
             val bridges = FindBridges(graph).findBridges()
 
             assertEquals(
-                listOf(Pair(bridges[0].first.key, bridges[0].second.key),
-                    Pair(bridges[1].first.key, bridges[1].second.key)),
+                listOf(
+                    Pair(bridges[0].first.key, bridges[0].second.key),
+                    Pair(bridges[1].first.key, bridges[1].second.key)
+                ),
                 listOf(Pair(4, 5), Pair(1, 4))
             )
         }

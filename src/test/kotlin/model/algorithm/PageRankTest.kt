@@ -10,7 +10,7 @@ class BetweennesCentralityTest {
 
     @Test
     fun basicDirectedGraph() {
-        val graph = DirectedGraph<Int>()
+        val graph = DirectedGraph()
         for (i in 0..3) {
             graph.addVertex(i)
         }
@@ -18,7 +18,7 @@ class BetweennesCentralityTest {
         graph.addEdge(0, 2)
         graph.addEdge(1, 2)
         graph.addEdge(3, 2)
-        graph.addEdge(2 ,0)
+        graph.addEdge(2, 0)
 
         val centrality = PageRank(graph).computePageRank(1)
 
@@ -28,7 +28,7 @@ class BetweennesCentralityTest {
 
     @Test
     fun basicUndirectedGraph() {
-        val graph = UndirectedGraph<Int>()
+        val graph = UndirectedGraph()
         for (i in 0..3) {
             graph.addVertex(i)
         }

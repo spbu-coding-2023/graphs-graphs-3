@@ -9,19 +9,19 @@ import kotlin.test.assertNull
 
 @Suppress("ClassName")
 class UndirectedGraphTest {
-    lateinit var graph: UndirectedGraph<Int>
+    lateinit var graph: UndirectedGraph
 
-    fun Graph<Int>.getSize() = this.vertices.size
-    fun Graph<Int>.findVertex(key: Int) = this.vertices.find { it.key == key }
-    fun Graph<Int>.findEdge(key1: Int, key2: Int) = this.adjacencyList[findVertex(key1)]?.find { it.second.key == key2 }
+    fun Graph.getSize() = this.vertices.size
+    fun Graph.findVertex(key: Int) = this.vertices.find { it.key == key }
+    fun Graph.findEdge(key1: Int, key2: Int) = this.adjacencyList[findVertex(key1)]?.find { it.second.key == key2 }
 
-    fun Graph<Int>.checkSize(size: Int) = assertEquals(this.getSize(), size)
-    fun Graph<Int>.checkContainVertex(vertex: Vertex<Int>) = assertEquals(this.findVertex(vertex.key), vertex)
-    fun Graph<Int>.checkNotContainVertex(vertex: Vertex<Int>) = assertEquals(this.findVertex(vertex.key), null)
-    fun Graph<Int>.checkNotNullEdgeArray(vertex: Vertex<Int>) = assertNotNull(this.adjacencyList[vertex])
-    fun Graph<Int>.checkNullEdgeArray(vertex: Vertex<Int>) = assertNull(this.adjacencyList[vertex])
+    fun Graph.checkSize(size: Int) = assertEquals(this.getSize(), size)
+    fun Graph.checkContainVertex(vertex: Vertex) = assertEquals(this.findVertex(vertex.key), vertex)
+    fun Graph.checkNotContainVertex(vertex: Vertex) = assertEquals(this.findVertex(vertex.key), null)
+    fun Graph.checkNotNullEdgeArray(vertex: Vertex) = assertNotNull(this.adjacencyList[vertex])
+    fun Graph.checkNullEdgeArray(vertex: Vertex) = assertNull(this.adjacencyList[vertex])
 
-    fun Graph<Int>.checkExistingUndirectedEdge(key1: Int, key2: Int) {
+    fun Graph.checkExistingUndirectedEdge(key1: Int, key2: Int) {
         val edge1 = this.findEdge(key1, key2)
         val edge2 = this.findEdge(key2, key1)
 
