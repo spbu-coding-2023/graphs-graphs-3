@@ -1,4 +1,4 @@
-package model.algoritm
+package model.algorithm
 
 import model.graph.Graph
 import model.graph.Vertex
