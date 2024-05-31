@@ -12,7 +12,11 @@ class FindCycle(private val graph: Graph) {
     fun calculate(vertex: Vertex): List<Edge> {
         dfs(vertex)
 
-        return path
+        if (isFound) {
+            return path
+        }
+
+        return emptyList()
     }
 
     private fun dfs(vertex: Vertex) {
@@ -34,12 +38,15 @@ class FindCycle(private val graph: Graph) {
                     path.add(childEdge)
                     isFound = true
                 }
-                
-                else -> path.dropLast(1)
+
+                else -> continue
             }
         }
 
         color[vertex] = Color.BLACK
+        if (!isFound) {
+            path.removeLastOrNull()
+        }
     }
 
     private fun getChildren(vertex: Vertex): List<Edge> {
