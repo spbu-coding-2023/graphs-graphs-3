@@ -41,44 +41,69 @@ fun HeaderView(name: String, close: () -> Unit, maximize: () -> Unit, isMaximize
     ) {
         Row(Modifier) {
             Row(Modifier.padding(start = 7f.dp, top = 7f.dp)) {
-                Image(
-                    modifier = Modifier.padding(end = (Config.menuWidth - 30f - 7f).dp),
-                    painter = painterResource("Dima.svg"),
-                    contentDescription = "Icon"
-                )
-                Box(
-                    Modifier
-                        .size(Config.headerHeight.dp)
-                        .shadow(
-                            elevation = 5f.dp,
-                            spotColor = Color.Black
-                        ).background(Color(0xFF3D3D3D)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MyText("File", 16f)
-                }
+                Logo()
+                FileButton()
             }
         }
         Row {
-            Text(text = "$name", color = Color.White, fontSize = 20f.sp)
+            MyText(name)
         }
         Row {
-            Box(Modifier.fillMaxHeight().width(Config.headerHeight.dp).background(Color(0xFF5A5959)).onClick {
-                minimize()
-            }, contentAlignment = Alignment.Center) {
-                Box(Modifier.size(10f.dp, 2f.dp).border(2f.dp, Color.White))
-            }
-            Box(Modifier.fillMaxHeight().width(Config.headerHeight.dp).background(Color(0xFF5A5959)).onClick {
-                maximize()
-            }, contentAlignment = Alignment.Center) {
-                Box(Modifier.size(10f.dp, 8f.dp).border(2f.dp, Color.White))
-            }
-            Box(Modifier.fillMaxHeight().width(Config.headerHeight.dp).background(Color(0xFFC80000)).onClick {
-                close()
-            }, contentAlignment = Alignment.Center) {
+            MinimizeButton(minimize)
+            MaximizeButton(maximize)
+            CloseButton(close)
+        }
+    }
+}
 
-                Icon(imageVector = Icons.Filled.Close, "Done", tint = Color.White)
-            }
-        }
+@OptIn(ExperimentalFoundationApi::class)
+private fun Modifier.menuButton(color: Color, onClick: () -> Unit): Modifier {
+    return Modifier.fillMaxHeight().width(Config.headerHeight.dp).background(color).onClick {
+        onClick()
+    }
+}
+
+@Composable
+private fun MinimizeButton(minimize: () -> Unit) {
+    Box(Modifier.menuButton(Color(0xFF5A5959), minimize), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(10f.dp, 2f.dp).border(2f.dp, Color.White))
+    }
+}
+
+@Composable
+private fun MaximizeButton(maximize: () -> Unit) {
+    Box(Modifier.menuButton(Color(0xFF5A5959), maximize), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(10f.dp, 8f.dp).border(2f.dp, Color.White))
+    }
+}
+
+@Composable
+private fun CloseButton(close: () -> Unit) {
+    Box(Modifier.menuButton(Color(0xFFC80000), close), contentAlignment = Alignment.Center) {
+        Icon(imageVector = Icons.Filled.Close, "Done", tint = Color.White)
+    }
+}
+
+@Composable
+private fun Logo() {
+    Image(
+        modifier = Modifier.padding(end = (Config.menuWidth - 30f - 7f).dp),
+        painter = painterResource("Dima.svg"),
+        contentDescription = "Icon"
+    )
+}
+
+@Composable
+private fun FileButton() {
+    Box(
+        Modifier
+            .size(Config.headerHeight.dp)
+            .shadow(
+                elevation = 5f.dp,
+                spotColor = Color.Black
+            ).background(Color(0xFF3D3D3D)),
+        contentAlignment = Alignment.Center
+    ) {
+        MyText("File", 16f)
     }
 }
