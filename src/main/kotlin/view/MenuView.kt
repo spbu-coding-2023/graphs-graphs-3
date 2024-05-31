@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,7 @@ fun MenuView(
         ) {
             onNodeCreatingChange()
         }
-        MenuIcon("Ribs.svg", "Add Edge")
+        MenuIcon("Ribs.svg", "Add Edge", modifier = Modifier.alpha(0.2f))
         MenuIcon("Clustering.svg", "Clustering", Modifier.glow(isClustering)) {
             onClusteringChange()
         }
