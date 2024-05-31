@@ -27,7 +27,7 @@ class Clustering(graph: Graph) {
 
     fun calculate(): HashMap<Vertex, Int> {
         val map = getPartition(links, 0)
-        val result = map.mapKeys { vIds[it.key]!! }
+        val result = map.mapKeys { vIds[it.key] ?: throw IllegalStateException() }
         return HashMap(result)
     }
 
