@@ -1,10 +1,11 @@
 package model.algorithm
 
 import model.graph.Edge
+import model.graph.Graph
 import model.graph.Vertex
 import model.graph.WeightedGraph
 
-class BellmanFord(private val graph: WeightedGraph) {
+class BellmanFord(private val graph: Graph) {
     val parentMap = HashMap<Vertex, Vertex>()
     val dist = graph.vertices.associateWith { Long.MAX_VALUE }.toMutableMap()
 
@@ -56,6 +57,7 @@ class BellmanFord(private val graph: WeightedGraph) {
                 val weight = getWeight(u, v)
                 if (uDistance != Long.MAX_VALUE && uDistance + weight < vDistance) {
                     action(v, u, uDistance, weight)
+                    flag = true
                 }
             }
         }

@@ -32,7 +32,7 @@ class BellmanFordTest {
     @Nested
     inner class `Undirected graph` {
         @Test
-        fun `two straight paths to node`() {
+        fun `graph with negative edge don't have shortest path (negative cycle)`() {
             var first: Vertex
             var second: Vertex
 
@@ -44,13 +44,13 @@ class BellmanFordTest {
                 addEdges(
                     1 to 2 weight 2,
                     2 to 4 weight -2,
-                    1 to 3 weight -2,
+                    1 to 3 weight 2,
                     3 to 4 weight 4
                 )
             }
 
             val result = BellmanFord(graph).calculate(first, second).map { it.first.key to it.second.key }
-            assertEquals(listOf(1 to 2, 2 to 4), result)
+            assertEquals(listOf(), result)
         }
     }
 
