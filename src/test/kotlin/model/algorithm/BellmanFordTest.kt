@@ -30,9 +30,9 @@ class BellmanFordTest {
     }
 
     @Nested
-    inner class `Homka` {
+    inner class `Undirected graph` {
         @Test
-        fun `test 1`() {
+        fun `two straight paths to node`() {
             var first: Vertex
             var second: Vertex
 
