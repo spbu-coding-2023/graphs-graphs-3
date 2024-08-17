@@ -8,7 +8,6 @@ class Dijkstra(private val graph: WeightedGraph) {
         val startVertex = graph.vertices.find { it.key == startKey } ?: return null
         val endVertex = graph.vertices.find { it.key == endKey } ?: return null
 
-        // Инициализация расстояний и предшественников
         val distances = mutableMapOf<Vertex, Long>().withDefault { Long.MAX_VALUE }
         val previous = mutableMapOf<Vertex, Vertex?>()
         val visited = mutableSetOf<Vertex>()
@@ -38,7 +37,6 @@ class Dijkstra(private val graph: WeightedGraph) {
             }
         }
 
-        // Восстановление пути
         val path = mutableListOf<Edge>()
         var currentVertex: Vertex? = endVertex
 
@@ -53,36 +51,4 @@ class Dijkstra(private val graph: WeightedGraph) {
 
         return if (path.isEmpty()) null else path.reversed()
     }
-}
-fun main(){
-    val graph = WeightedGraph()
-    graph.addVertex(1)
-    graph.addVertex(2)
-    graph.addVertex(3)
-    graph.addVertex(4)
-    graph.addVertex(5)
-    graph.addVertex(6)
-    graph.addVertex(7)
-    graph.addVertex(8)
-    graph.addVertex(9)
-
-    graph.addEdge(1, 2, 4)
-    graph.addEdge(2, 5, 2)
-    graph.addEdge(1, 3, 3)
-    graph.addEdge(3, 5, 1)
-    graph.addEdge(1, 4, 2)
-    graph.addEdge(4, 5, 3)
-    graph.addEdge(5, 6, 5)
-    graph.addEdge(6, 7, 8)
-    graph.addEdge(6, 8, 9)
-    graph.addEdge(7, 9, 1)
-    graph.addEdge(8, 9, 2)
-
-    val result = Dijkstra(graph).findShortestPath(1, 9)
-    if (result != null) {
-        for (i in result){
-            println(listOf(i.first, i.second, i.weight))
-        }
-    }
-
 }
