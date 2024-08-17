@@ -2,7 +2,7 @@ package model.algorithm
 
 import model.graph.*
 
-class Dijkstra(private val graph: WeightedGraph) {
+class Dijkstra(private val graph: Graph) {
 
     fun findShortestPath(startKey: Int, endKey: Int): List<Edge>? {
         val startVertex = graph.vertices.find { it.key == startKey } ?: return null
