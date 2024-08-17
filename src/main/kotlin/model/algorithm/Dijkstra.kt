@@ -1,10 +1,11 @@
 package model.algorithm
 
 import model.graph.*
+import java.util.concurrent.TransferQueue
 
 class Dijkstra(private val graph: Graph) {
 
-    fun findShortestPath(startKey: Int, endKey: Int): List<Edge>? {
+    fun findShortestPath(startKey: Int, endKey: Int): List<Triple<Int, Int, Long>>? {
         val startVertex = graph.vertices.find { it.key == startKey } ?: return null
         val endVertex = graph.vertices.find { it.key == endKey } ?: return null
 
@@ -37,14 +38,14 @@ class Dijkstra(private val graph: Graph) {
             }
         }
 
-        val path = mutableListOf<Edge>()
+        val path = mutableListOf<Triple<Int, Int, Long>>()
         var currentVertex: Vertex? = endVertex
 
         while (currentVertex != null && currentVertex != startVertex) {
             val prevVertex = previous[currentVertex] ?: break
             val edge = graph.adjacencyList[prevVertex]?.find { it.second == currentVertex }
             if (edge != null) {
-                path.add(edge)
+                path.add(Triple(edge.first.key, edge.second.key, edge.weight))
             }
             currentVertex = prevVertex
         }
