@@ -2,6 +2,7 @@ package model.reader
 
 import model.graph.Graph
 import model.graph.Vertex
+import model.graph.WeightedGraph
 
 import java.sql.Connection
 import java.sql.DriverManager
@@ -31,7 +32,7 @@ class SQLiteReader: Reader {
         val createTableGraph = """
         CREATE TABLE IF NOT EXISTS graph (
             graph_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            graph_name TEXT NOT NULL
+            graph_name TEXT NOT NULL UNIQUE
         )
     """
         statement.execute(createTableGraph)
@@ -84,17 +85,97 @@ class SQLiteReader: Reader {
         insertEdgeStmt.close()
     }
 
+    private fun connect(filepath: String): Connection = DriverManager.getConnection("jdbc:sqlite:$filepath")
+
+
     override fun saveGraph(graph: Graph, filepath: String, nameGraph: String) {
+
         //Сконектились с базой
-        val connection = DriverManager.getConnection("jdbc:sqlite:$filepath")
+        val connection = connect(filepath)
+
         //Создали таблицы и связи между ними
         createTable(connection)
+
         //Сохранили граф по полочкам:)
         insertGraph(connection, graph, nameGraph)
     }
 
     override fun loadGraph(filepath: String, nameGraph: String): Graph {
-        TODO("Load graph")
+
+        //Сконектились с базой
+        val connection = connect(filepath)
+
+        val graph: Graph = WeightedGraph()
+
+        //Сделали запрос на получение id графа
+        val graphStmt = connection.prepareStatement(
+            "SELECT graph_id FROM graph WHERE graph_name = ?"
+        )
+
+        graphStmt.setString(1, nameGraph)
+        val graphResultSet = graphStmt.executeQuery()
+
+        if (!graphResultSet.next()) {
+            throw IllegalArgumentException("Graph with name $nameGraph not found")
+        }
+
+        val graphId = graphResultSet.getInt("id")
+        graphResultSet.close()
+        graphStmt.close()
+
+        //Сделали запрос на получение id и ключа вершины
+        val vertexStmt = connection.prepareStatement(
+            "SELECT id, vertex_key FROM vertex WHERE graph_id = ?"
+        )
+
+        vertexStmt.setInt(1, graphId)
+        val vertexResultSet = vertexStmt.executeQuery()
+
+        // Нужна для нахождение вершин ребра через их id
+        val vertexMap = mutableMapOf<Int, Vertex>()
+
+        while (vertexResultSet.next()){
+            val vertexId = vertexResultSet.getInt("id")
+            val vertexKey = vertexResultSet.getInt("vertex_key")
+            val vertex = graph.addVertex(vertexKey)
+
+            if (vertex != null){
+                vertexMap[vertexId] = vertex
+            }
+        }
+
+        vertexResultSet.close()
+        vertexStmt.close()
+
+        /*
+        Сделали запрос на получение id начальной и конечной вершины, а также веса, ребра,
+         через id вершины полученной от graph_id
+        */
+        val edgeStmt = connection.prepareStatement(
+            "SELECT start_vertex_id, end_vertex_id, weight FROM edge WHERE start_vertex_id" +
+                    " IN (SELECT id FROM vertex WHERE graph_id = ?)"
+        )
+
+        edgeStmt.setInt(1, graphId)
+        val edgeResultSet = edgeStmt.executeQuery()
+
+        while (edgeResultSet.next()) {
+            val startVertexId = edgeResultSet.getInt("start_vertex_id")
+            val endVertexId = edgeResultSet.getInt("end_vertex_id")
+            val weight = edgeResultSet.getLong("weight")
+
+            val startVertex = vertexMap[startVertexId]
+            val endVertex = vertexMap[endVertexId]
+
+            if (startVertex != null && endVertex != null) {
+                graph.addEdge(startVertex.key, endVertex.key, weight)
+            }
+        }
+        edgeResultSet.close()
+        edgeStmt.close()
+
+        connection.close()
+        return graph
     }
 }
 
