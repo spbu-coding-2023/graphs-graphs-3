@@ -12,7 +12,7 @@ class UndirectedViewModel(
     private val graph: UndirectedGraph,
     val showVerticesLabels: Boolean,
     val groups: HashMap<Vertex, Int> = hashMapOf(),
-    val ranks: List<Pair<Vertex, Double>>
+    val ranks: List<Pair<Vertex, Double>> = listOf()
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()

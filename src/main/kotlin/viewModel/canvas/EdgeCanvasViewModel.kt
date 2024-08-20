@@ -1,5 +1,6 @@
 package viewModel.canvas
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 
 class EdgeCanvasViewModel(
@@ -8,7 +9,7 @@ class EdgeCanvasViewModel(
     val color: Color,
     strokeWidth: Float,
     zoom: Float,
-    val showOrientation: Boolean = true
+    val showOrientation: MutableState<Boolean>
 ) {
     val strokeWidth = strokeWidth * zoom
 }

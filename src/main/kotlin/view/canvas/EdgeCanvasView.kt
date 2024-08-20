@@ -8,17 +8,29 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import viewModel.canvas.EdgeCanvasViewModel
+import java.util.*
 
 @Composable
 fun EdgeCanvasView(
     viewModel: EdgeCanvasViewModel,
     modifier: Modifier = Modifier
 ) {
+    println("[${Date()}] render edge")
+
     Canvas(Modifier.fillMaxSize()) {
+        println("[${Date()}] render canvas inside edge")
+
         // something hard thing for drawing edge from border of node, not from center
-        val firstCenter = viewModel.first.offset + Offset(viewModel.first.radius.value, viewModel.first.radius.value)
+        val firstCenter =
+            viewModel.first.offset + Offset(
+                viewModel.first.radius.value,
+                viewModel.first.radius.value
+            )
         val secondCenter =
-            viewModel.second.offset + Offset(viewModel.second.radius.value, viewModel.second.radius.value)
+            viewModel.second.offset + Offset(
+                viewModel.second.radius.value,
+                viewModel.second.radius.value
+            )
 
         val vector = (secondCenter - firstCenter)
         val vectorNorm = vector / vector.getDistance()
@@ -37,7 +49,7 @@ fun EdgeCanvasView(
             )
         }
 
-        if (viewModel.showOrientation) {
+        if (viewModel.showOrientation.value) {
             drawLine(
                 start = end,
                 end = end - rotateVector(radiusVectorSecond * 0.8f, 30.0),

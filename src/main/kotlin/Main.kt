@@ -12,10 +12,11 @@ import model.graph.UndirectedGraph
 import view.HeaderView
 import view.MainView
 import view.MenuView
+import viewModel.MainViewModel
 import viewModel.graph.UndirectedViewModel
 
-val AMOUNT_NODES = 16
-val EDGE_CHANGE = 5f
+val AMOUNT_NODES = 2
+val EDGE_CHANGE = 100
 
 val graph = UndirectedGraph().apply {
     for (i in (0 until AMOUNT_NODES)) {
@@ -34,6 +35,7 @@ val graph = UndirectedGraph().apply {
 val groups = Clustering(graph).calculate()
 val ranks = PageRank(graph).computePageRank(3)
 val undirectedViewModel = UndirectedViewModel(graph, false, groups, ranks)
+val mainViewModel = MainViewModel(graph)
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }
@@ -60,7 +62,7 @@ fun main() = application {
                     isMaximized, { windowState.isMinimized = !windowState.isMinimized })
             }
             MainView(
-                undirectedViewModel,
+                mainViewModel,
             )
         }
     }
