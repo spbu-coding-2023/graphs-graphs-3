@@ -1,8 +1,6 @@
 package model.reader
 
-import model.graph.Graph
-import model.graph.Vertex
-import model.graph.WeightedGraph
+import model.graph.*
 
 import java.sql.Connection
 import java.sql.DriverManager
@@ -32,7 +30,8 @@ class SQLiteReader: Reader {
         val createTableGraph = """
         CREATE TABLE IF NOT EXISTS graph (
             graph_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            graph_name TEXT NOT NULL UNIQUE
+            graph_name TEXT NOT NULL UNIQUE,
+            graph_type_flag INTEGER
         )
     """
         statement.execute(createTableGraph)
@@ -42,9 +41,24 @@ class SQLiteReader: Reader {
     }
 
     private fun insertGraph(connect: Connection, graph: Graph, nameGraph: String){
-        val insertName = "INSERT INTO graph (graph_name) VALUES (?)"
+
+        val insertName = "INSERT INTO graph (graph_name, graph_type_flag) VALUES (?, ?)"
         val insertNameStmt: PreparedStatement = connect.prepareStatement(insertName)
         insertNameStmt.setString(1, nameGraph)
+
+        if (graph is WeightedGraph){
+            insertNameStmt.setInt(2, 1)
+        }
+        if (graph is UndirectedGraph){
+            insertNameStmt.setInt(2, 2)
+        }
+        if (graph is DirectedGraph){
+            insertNameStmt.setInt(2, 3)
+        }
+        if (graph is WeightedDirectedGraph){
+            insertNameStmt.setInt(2, 4)
+        }
+
         insertNameStmt.executeUpdate()
 
         val graphId = insertNameStmt.generatedKeys.getInt(1)
@@ -105,11 +119,11 @@ class SQLiteReader: Reader {
         //Сконектились с базой
         val connection = connect(filepath)
 
-        val graph: Graph = WeightedGraph()
+        val graph: Graph
 
         //Сделали запрос на получение id графа
         val graphStmt = connection.prepareStatement(
-            "SELECT graph_id FROM graph WHERE graph_name = ?"
+            "SELECT graph_id, graph_type_flag FROM graph WHERE graph_name = ?"
         )
 
         graphStmt.setString(1, nameGraph)
@@ -119,7 +133,17 @@ class SQLiteReader: Reader {
             throw IllegalArgumentException("Graph with name $nameGraph not found")
         }
 
-        val graphId = graphResultSet.getInt("id")
+        val graphId = graphResultSet.getInt("graph_id")
+        val graphType = graphResultSet.getInt("graph_type_flag")
+
+        graph = when (graphType) {
+            1 -> WeightedGraph()
+            2 -> UndirectedGraph()
+            3 -> DirectedGraph()
+            4 -> WeightedDirectedGraph()
+            else -> throw IllegalArgumentException("Unknown graph type: $graphType")
+        }
+
         graphResultSet.close()
         graphStmt.close()
 
