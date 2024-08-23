@@ -5,21 +5,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import viewModel.canvas.EdgeCanvasViewModel
-import java.util.*
 
 @Composable
 fun EdgeCanvasView(
     viewModel: EdgeCanvasViewModel,
     modifier: Modifier = Modifier
 ) {
-    println("[${Date()}] render edge")
 
     Canvas(Modifier.fillMaxSize()) {
-        println("[${Date()}] render canvas inside edge")
-
         // something hard thing for drawing edge from border of node, not from center
         val firstCenter =
             viewModel.first.offset + Offset(

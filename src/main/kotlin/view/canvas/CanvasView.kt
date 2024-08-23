@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.onSizeChanged
 import viewModel.canvas.CanvasViewModel
-import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -20,7 +19,6 @@ fun CanvasView(
     viewModel: CanvasViewModel,
     modifier: Modifier = Modifier
 ) {
-    println("[${Date()}] render canvas")
     Box(
         modifier = modifier.background(Color(0xFF242424))
             .onPointerEvent(PointerEventType.Scroll, onEvent = viewModel.onScroll)
