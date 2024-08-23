@@ -1,6 +1,6 @@
 package model.graph
 
-class DirectedGraph : UndirectedGraph() {
+open class DirectedGraph : UndirectedGraph() {
 
     override fun addEdge(first: Int, second: Int, weight: Long): Edge? {
         if (first == second) return null
