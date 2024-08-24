@@ -1,7 +1,6 @@
 package model.graph
 
-open class DirectedGraph : UndirectedGraph() {
-
+class WeightedDirectedGraph: DirectedGraph() {
     override fun addEdge(first: Int, second: Int, weight: Long): Edge? {
         if (first == second) return null
 
@@ -11,15 +10,15 @@ open class DirectedGraph : UndirectedGraph() {
         // edge already exists
         if (_adjacencyList[vertex1]?.find { it.second.key == second } != null) return null
 
-        _adjacencyList[vertex1]?.add(DirectedEdge(vertex1, vertex2))
+        _adjacencyList[vertex1]?.add(WeightedDirectedEdge(vertex1, vertex2, weight))
 
 
         return _adjacencyList[vertex1]?.last()
     }
 
-    private data class DirectedEdge(override val first: Vertex, override val second: Vertex) : Edge {
+    private data class WeightedDirectedEdge(
+        override val first: Vertex,
+        override val second: Vertex,
         override var weight: Long
-            get() = 1
-            set(value) {}
-    }
+    ) : Edge
 }
