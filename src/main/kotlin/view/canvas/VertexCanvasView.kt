@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import view.MyText
+import components.MyText
 import viewModel.canvas.VertexCanvasViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,6 +31,6 @@ fun VertexCanvasView(
             .onDrag(onDrag = viewModel::onDrag),
         contentAlignment = Alignment.Center
     ) {
-        MyText(viewModel.viewModel.label, viewModel.textSize.value)
+        MyText(viewModel.vertexViewModel.label, viewModel.textSize.value)
     }
 }
