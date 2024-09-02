@@ -19,6 +19,7 @@ fun MainView(mainViewModel: MainViewModel) {
     var isClustering by remember { mutableStateOf(false) }
     var isRanked by remember { mutableStateOf(false) }
     var isNodeCreatingMode by remember { mutableStateOf(false) }
+    var isAlgorithmMenuOpen by remember { mutableStateOf(false)}
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
         MenuView(
@@ -27,7 +28,10 @@ fun MainView(mainViewModel: MainViewModel) {
             isClustering,
             { isClustering = !isClustering },
             isRanked,
-            { isRanked = !isRanked })
+            { isRanked = !isRanked },
+            isAlgorithmMenuOpen,
+            { isAlgorithmMenuOpen = !isAlgorithmMenuOpen })
+
         
         CanvasView(
             mainViewModel.canvasViewModel,

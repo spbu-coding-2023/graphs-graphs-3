@@ -31,7 +31,9 @@ fun MenuView(
     isClustering: Boolean,
     onClusteringChange: () -> Unit,
     isRanked: Boolean,
-    onRankedChange: () -> Unit
+    onRankedChange: () -> Unit,
+    isAlgorithmMenuOpen: Boolean,
+    onAlgorithmMenuOpenChange: () -> Unit
 ) {
     Column(
         Modifier.fillMaxHeight().width(Config.menuWidth.dp).background(color = Color(0xFF3D3D3D)),
@@ -49,6 +51,9 @@ fun MenuView(
         }
         MenuIcon("PageRank.svg", "Analysis graph", Modifier.glow(isRanked)) {
             onRankedChange()
+        }
+        MenuIcon("Algorithm.svg", "Algorithms...", Modifier.glow(isAlgorithmMenuOpen)){
+            onAlgorithmMenuOpenChange()
         }
     }
 }
