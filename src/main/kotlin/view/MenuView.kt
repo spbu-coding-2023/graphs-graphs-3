@@ -48,7 +48,6 @@ fun MenuIcon(name: String, description: String, modifier: Modifier = Modifier, o
                 }
             )
             .onGloballyPositioned { layoutCoordinates ->
-            // Получаем положение и размер иконки
             iconPosition = layoutCoordinates.positionInRoot().run {
                 IntOffset(x.roundToInt(), y.roundToInt())
             }
