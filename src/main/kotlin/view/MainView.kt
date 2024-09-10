@@ -16,19 +16,8 @@ val MENU_WIDTH = Config.menuWidth
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainView(mainViewModel: MainViewModel) {
-    var isClustering by remember { mutableStateOf(false) }
-    var isRanked by remember { mutableStateOf(false) }
-    var isNodeCreatingMode by remember { mutableStateOf(false) }
-
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
-        MenuView(
-            isNodeCreatingMode,
-            { isNodeCreatingMode = !isNodeCreatingMode },
-            isClustering,
-            { isClustering = !isClustering },
-            isRanked,
-            { isRanked = !isRanked })
-        
+        MenuView(mainViewModel.menuViewModel)
         CanvasView(
             mainViewModel.canvasViewModel,
             Modifier.fillMaxSize()

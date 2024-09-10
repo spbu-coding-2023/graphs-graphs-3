@@ -2,6 +2,7 @@ package view.canvas
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -23,14 +24,11 @@ fun CanvasView(
         modifier = modifier.background(Color(0xFF242424))
             .onPointerEvent(PointerEventType.Scroll, onEvent = viewModel.onScroll)
             .pointerInput(Unit, viewModel.onDrag)
-//            .pointerInput(Unit) {
-//                detectTapGestures {
-//                    if (isNodeCreatingMode) {
-//                        canvasViewModel.createVertex(it - (canvasSize / 2f), center, zoom)
-//                        zoom += 0.000001f // костыль для рекомпозиции
-//                    }
-//                }
-//            }
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    viewModel.createNode(it)
+                }
+            }
             .pointerHoverIcon(PointerIcon.Hand)
             .onSizeChanged {
                 viewModel.canvasSize = Offset(it.width.toFloat(), it.height.toFloat())

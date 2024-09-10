@@ -2,18 +2,16 @@ package viewModel.canvas
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
+import androidx.compose.ui.layout.LayoutCoordinates
 import model.graph.UndirectedGraph
 import view.HEADER_HEIGHT
 import view.MENU_WIDTH
@@ -23,6 +21,39 @@ class CanvasViewModel(
     val graph: UndirectedGraph,
 ) {
     private val graphViewModel = UndirectedViewModel(graph, true)
+    val verticesSize = mutableStateOf(0)
+
+    var isClustering
+        get() = graphViewModel.clustering
+        set(value) {
+            graphViewModel.clustering = value
+        }
+
+    var isRanked
+        get() = graphViewModel.ranked
+        set(value) {
+            graphViewModel.ranked = value
+        }
+
+    val _isNodeCreatingMode = mutableStateOf(false)
+    var isNodeCreatingMode
+        get() = _isNodeCreatingMode.value
+        set(value) {
+            _isNodeCreatingMode.value = value
+        }
+
+    fun createNode(offset: Offset) {
+        if (isNodeCreatingMode) {
+            val coordinates = offset * (1 / zoom) + center
+            val viewModel = graphViewModel.createVertex(coordinates) ?: return
+
+            zoom += 0.000001f // костыль для рекомпозиции
+            _vertices[viewModel] = VertexCanvasViewModel(viewModel, _zoom, _center, _canvasSize)
+            updateVertexes()
+            println(_vertices.size)
+        }
+    }
+
 
     private val _zoom = mutableStateOf(1f)
     var zoom
@@ -128,12 +159,5 @@ class CanvasViewModel(
 //        }
 //
 //        return _vertices.values
-//    }
-
-//    fun createVertex(offset: Offset, center: Offset, zoom: Float) {
-//        val coordinates = offset * (1 / zoom) + center
-//        val viewModel = graphViewModel.createVertex(coordinates) ?: return
-//
-//        _vertices[viewModel] = VertexCanvasViewModel(viewModel, _zoom, center, canvasSize)
 //    }
 }

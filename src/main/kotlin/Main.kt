@@ -15,8 +15,8 @@ import view.MenuView
 import viewModel.MainViewModel
 import viewModel.graph.UndirectedViewModel
 
-val AMOUNT_NODES = 2
-val EDGE_CHANGE = 100
+val AMOUNT_NODES = 16
+val EDGE_CHANGE = 5.0
 
 val graph = UndirectedGraph().apply {
     for (i in (0 until AMOUNT_NODES)) {
