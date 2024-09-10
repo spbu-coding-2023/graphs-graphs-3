@@ -30,6 +30,7 @@ class CanvasViewModel(
         set(value) {
             _zoom.value = value
             updateVertexes()
+            updateEdges()
         }
 
     private val _center = mutableStateOf(Offset(0f, 0f))
@@ -79,7 +80,7 @@ class CanvasViewModel(
     }
 
     private fun updateEdges() {
-
+        edges.forEach { it.updateEdge(zoom) }
     }
 
     val onScroll: AwaitPointerEventScope.(PointerEvent) -> Unit = {

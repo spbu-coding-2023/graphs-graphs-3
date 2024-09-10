@@ -55,6 +55,7 @@ class VertexCanvasViewModel(
     fun updateVertex() {
         offset = calculateOffset()
         radius = calculateRadius()
+        strokeWidth = calculateStrokeWidth()
         textSize = calculateTextSize()
     }
 
