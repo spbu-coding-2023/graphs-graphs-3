@@ -32,17 +32,12 @@ val graph = UndirectedGraph().apply {
     }
 }
 
-val groups = Clustering(graph).calculate()
-val ranks = PageRank(graph).computePageRank(3)
-val undirectedViewModel = UndirectedViewModel(graph, false, groups, ranks)
 val mainViewModel = MainViewModel(graph)
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }
     var isMaximized by remember { mutableStateOf(true) }
-    var isMinimize by remember { mutableStateOf(false) }
-    var position: WindowPosition by remember { mutableStateOf(WindowPosition.PlatformDefault) }
-    var headerName by remember { mutableStateOf("Dimabase.db") }
+    val headerName by remember { mutableStateOf("Dimabase.db") }
 
     val windowState = WindowState(
         placement = if (isMaximized) WindowPlacement.Maximized else WindowPlacement.Floating,
