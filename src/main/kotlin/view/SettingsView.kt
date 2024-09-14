@@ -16,7 +16,6 @@ import components.MySlider
 import components.MyText
 import viewModel.SettingsViewModel
 
-
 @Composable
 fun SettingsView(viewModel: SettingsViewModel) {
     val redSlider = remember { mutableStateOf(1f / (0xFF / 0x8F)) }
@@ -28,34 +27,42 @@ fun SettingsView(viewModel: SettingsViewModel) {
     viewModel.onColorChange(Color(red = redSlider.value, green = greenSlider.value, blue = blueSlider.value))
     viewModel.onSizeChange(sizeSlider.value)
 
+    SettingsContainer {
+        Row(Modifier.fillMaxWidth().padding(top = 10f.dp), horizontalArrangement = Arrangement.Center) {
+            MyText("Node")
+        }
+
+        Row(Modifier.fillMaxWidth().padding(top = 10f.dp, start = 20f.dp)) {
+            Column {
+                MyText("Color:")
+                MySlider("R: ", redSlider)
+                MySlider("G: ", greenSlider)
+                MySlider("B: ", blueSlider)
+                MySlider("Size: ", sizeSlider, (5f..80f))
+            }
+        }
+
+        Row(
+            Modifier.fillMaxWidth().padding(start = 20f.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MyText("Orientated")
+            Checkbox(orientatedCheckBox.value, onCheckedChange = {
+                viewModel.onOrientatedChange(it)
+                orientatedCheckBox.value = !orientatedCheckBox.value
+            })
+        }
+    }
+}
+
+@Composable
+fun SettingsContainer(content: @Composable () -> Unit) {
     Box(Modifier.fillMaxSize().padding(top = 80f.dp, end = 20f.dp).zIndex(10f), contentAlignment = Alignment.TopEnd) {
         Box(
             Modifier.size(270f.dp, 320f.dp).background(Color(0xFF3D3D3D), RoundedCornerShape(10))
         ) {
             Column {
-                Row(Modifier.fillMaxWidth().padding(top = 10f.dp), horizontalArrangement = Arrangement.Center) {
-                    MyText("Node")
-                }
-                Row(Modifier.fillMaxWidth().padding(top = 10f.dp, start = 20f.dp)) {
-                    Column {
-                        MyText("Color:")
-                        MySlider("R: ", redSlider)
-                        MySlider("G: ", greenSlider)
-                        MySlider("B: ", blueSlider)
-                        MySlider("Size: ", sizeSlider, (5f..80f))
-                    }
-                }
-
-                Row(
-                    Modifier.fillMaxWidth().padding(start = 20f.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    MyText("Orientated")
-                    Checkbox(orientatedCheckBox.value, onCheckedChange = {
-                        viewModel.onOrientatedChange(it)
-                        orientatedCheckBox.value = !orientatedCheckBox.value
-                    })
-                }
+                content()
             }
         }
     }
