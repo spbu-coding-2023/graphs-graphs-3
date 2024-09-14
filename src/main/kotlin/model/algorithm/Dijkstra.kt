@@ -1,7 +1,7 @@
 package model.algorithm
 
-import model.graph.*
-import java.util.concurrent.TransferQueue
+import model.graph.Graph
+import model.graph.Vertex
 
 class Dijkstra(private val graph: Graph) {
 

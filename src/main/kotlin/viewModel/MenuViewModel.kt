@@ -1,6 +1,5 @@
 package viewModel
 
-import androidx.compose.runtime.mutableStateOf
 import viewModel.canvas.CanvasViewModel
 
 class MenuViewModel(

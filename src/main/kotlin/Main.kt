@@ -3,17 +3,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
-import model.algorithm.Clustering
-import model.algorithm.PageRank
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.window.application
 import model.graph.UndirectedGraph
 import view.HeaderView
 import view.MainView
-import view.MenuView
 import viewModel.MainViewModel
-import viewModel.graph.UndirectedViewModel
 
 val AMOUNT_NODES = 16
 val EDGE_CHANGE = 5.0

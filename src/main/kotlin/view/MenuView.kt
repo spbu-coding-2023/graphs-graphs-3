@@ -1,5 +1,6 @@
 package view
 
+import Config
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape

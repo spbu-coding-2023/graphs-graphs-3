@@ -2,8 +2,10 @@ package view
 
 import Config
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
