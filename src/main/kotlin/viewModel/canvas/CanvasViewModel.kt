@@ -11,17 +11,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
-import androidx.compose.ui.layout.LayoutCoordinates
 import model.graph.UndirectedGraph
 import view.HEADER_HEIGHT
 import view.MENU_WIDTH
 import viewModel.graph.UndirectedViewModel
+import viewModel.graph.VertexViewModel
 
 class CanvasViewModel(
     val graph: UndirectedGraph,
 ) {
     private val graphViewModel = UndirectedViewModel(graph, true)
-    val verticesSize = mutableStateOf(0)
 
     var isClustering
         get() = graphViewModel.clustering
@@ -44,13 +43,12 @@ class CanvasViewModel(
 
     fun createNode(offset: Offset) {
         if (isNodeCreatingMode) {
-            val coordinates = offset * (1 / zoom) + center
+            val coordinates = (offset - (canvasSize / 2.0F)) * (1 / zoom) + center
+            println(offset - (canvasSize / 2.0F))
             val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
-            zoom += 0.000001f // костыль для рекомпозиции
             _vertices[viewModel] = VertexCanvasViewModel(viewModel, _zoom, _center, _canvasSize)
             updateVertexes()
-            println(_vertices.size)
         }
     }
 
@@ -87,9 +85,13 @@ class CanvasViewModel(
             _isOrientated.value = value
         }
 
-    private val _vertices = graphViewModel.vertices.associateWith { v ->
-        VertexCanvasViewModel(v, _zoom, _center, _canvasSize)
-    }.toMutableMap()
+    private val _vertices = mutableStateMapOf<VertexViewModel, VertexCanvasViewModel>()
+
+    init {
+        graphViewModel.vertices.forEach { v ->
+            _vertices[v] = VertexCanvasViewModel(v, _zoom, _center, _canvasSize)
+        }
+    }
 
     private val _edges = graphViewModel.adjacencyList.map { it.value }.flatten().map {
         val vertex1 =
