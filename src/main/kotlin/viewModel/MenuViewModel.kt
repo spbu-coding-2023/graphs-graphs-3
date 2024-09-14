@@ -1,5 +1,6 @@
 package viewModel
 
+import androidx.compose.runtime.mutableStateOf
 import viewModel.canvas.CanvasViewModel
 
 class MenuViewModel(
@@ -35,4 +36,14 @@ class MenuViewModel(
         isRanked = !isRanked
     }
 
+    val _isAlgorithmMenuOpen = mutableStateOf(false)
+    var isAlgorithmMenuOpen
+        get() = _isAlgorithmMenuOpen.value
+        set(value) {
+            _isAlgorithmMenuOpen.value = value
+        }
+
+    fun onAlgorithmMenuOpenChange() {
+        isAlgorithmMenuOpen = !isAlgorithmMenuOpen
+    }
 }
