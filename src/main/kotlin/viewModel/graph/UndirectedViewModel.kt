@@ -3,16 +3,17 @@ package viewModel.graph
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.unit.dp
+import model.algorithm.Clustering
+import model.algorithm.PageRank
 import model.graph.UndirectedGraph
 import model.graph.Vertex
 
 class UndirectedViewModel(
     private val graph: UndirectedGraph,
     val showVerticesLabels: Boolean,
-    val groups: HashMap<Vertex, Int> = hashMapOf(),
-    val ranks: List<Pair<Vertex, Double>> = listOf()
+    var groups: HashMap<Vertex, Int> = hashMapOf(),
+    var ranks: List<Pair<Vertex, Double>> = listOf()
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
@@ -38,6 +39,7 @@ class UndirectedViewModel(
         get() = _clustering.value
         set(value) {
             _clustering.value = value
+            groups = Clustering(graph).calculate()
             updateColor()
         }
 
@@ -45,6 +47,7 @@ class UndirectedViewModel(
         get() = _ranked.value
         set(value) {
             _ranked.value = value
+            ranks = PageRank(graph).computePageRank(3)
             updateSizes()
         }
 
@@ -94,6 +97,7 @@ class UndirectedViewModel(
         _vertices.forEach {
             it.value.radius = size.dp
         }
+        updateSizes()
     }
 
     fun createVertex(coordinates: Offset): VertexViewModel? {

@@ -1,27 +1,18 @@
 package view
 
 import Config
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import view.canvas.CanvasView
 import viewModel.MainViewModel
 
@@ -29,7 +20,7 @@ val HEADER_HEIGHT = Config.headerHeight
 val MENU_WIDTH = Config.menuWidth
 
 @Composable
-fun DisplayAlgorithmMenu(name : String) {
+fun DisplayAlgorithmMenu(name: String) {
 
     val imageResources = listOf(
         "FindBridge.svg",
@@ -40,7 +31,7 @@ fun DisplayAlgorithmMenu(name : String) {
         "FindCycle.svg"
     )
     Box(
-    modifier = Modifier.padding(top = 240.dp, start = 80.dp)
+        modifier = Modifier.padding(top = 240.dp, start = 80.dp)
     ) {
 
         // Изображение
@@ -86,33 +77,19 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainView(mainViewModel: MainViewModel) {
-    var isClustering by remember { mutableStateOf(false) }
-    var isRanked by remember { mutableStateOf(false) }
-    var isNodeCreatingMode by remember { mutableStateOf(false) }
-    var isAlgorithmMenuOpen by remember { mutableStateOf(false)}
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
-        MenuView(
-            isNodeCreatingMode,
-            { isNodeCreatingMode = !isNodeCreatingMode },
-            isClustering,
-            { isClustering = !isClustering },
-            isRanked,
-            { isRanked = !isRanked },
-            isAlgorithmMenuOpen,
-            { isAlgorithmMenuOpen = !isAlgorithmMenuOpen })
+        MenuView(mainViewModel.menuViewModel)
 
-        
         CanvasView(
             mainViewModel.canvasViewModel,
             Modifier.fillMaxSize()
         )
     }
 
-    if (isAlgorithmMenuOpen){
+    if (mainViewModel.menuViewModel.isAlgorithmMenuOpen) {
         DisplayAlgorithmMenu("DownMenuAlgorithm.svg")
     }
 

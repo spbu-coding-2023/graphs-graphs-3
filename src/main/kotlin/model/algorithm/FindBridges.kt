@@ -1,7 +1,9 @@
 package model.algorithm
 
 
-import model.graph.*
+import model.graph.Edge
+import model.graph.Graph
+import model.graph.Vertex
 
 
 class FindBridges(

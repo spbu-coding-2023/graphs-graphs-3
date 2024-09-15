@@ -3,20 +3,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
-import model.algorithm.Clustering
-import model.algorithm.PageRank
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.window.application
 import model.graph.UndirectedGraph
 import view.HeaderView
 import view.MainView
-import view.MenuView
 import viewModel.MainViewModel
-import viewModel.graph.UndirectedViewModel
 
-val AMOUNT_NODES = 2
-val EDGE_CHANGE = 100
+val AMOUNT_NODES = 16
+val EDGE_CHANGE = 5.0
 
 val graph = UndirectedGraph().apply {
     for (i in (0 until AMOUNT_NODES)) {
@@ -32,17 +29,12 @@ val graph = UndirectedGraph().apply {
     }
 }
 
-val groups = Clustering(graph).calculate()
-val ranks = PageRank(graph).computePageRank(3)
-val undirectedViewModel = UndirectedViewModel(graph, false, groups, ranks)
 val mainViewModel = MainViewModel(graph)
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }
     var isMaximized by remember { mutableStateOf(true) }
-    var isMinimize by remember { mutableStateOf(false) }
-    var position: WindowPosition by remember { mutableStateOf(WindowPosition.PlatformDefault) }
-    var headerName by remember { mutableStateOf("Dimabase.db") }
+    val headerName by remember { mutableStateOf("Dimabase.db") }
 
     val windowState = WindowState(
         placement = if (isMaximized) WindowPlacement.Maximized else WindowPlacement.Floating,

@@ -11,5 +11,9 @@ class EdgeCanvasViewModel(
     zoom: Float,
     val showOrientation: MutableState<Boolean>
 ) {
-    val strokeWidth = strokeWidth * zoom
+    var strokeWidth = strokeWidth * (zoom)
+
+    fun updateEdge(zoom: Float) {
+        strokeWidth = 8f * zoom
+    }
 }

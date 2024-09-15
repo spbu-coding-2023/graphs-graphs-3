@@ -1,5 +1,6 @@
 package view
 
+import Config
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -16,12 +17,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import viewModel.MenuViewModel
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -48,14 +49,14 @@ fun MenuIcon(name: String, description: String, modifier: Modifier = Modifier, o
                 }
             )
             .onGloballyPositioned { layoutCoordinates ->
-            iconPosition = layoutCoordinates.positionInRoot().run {
-                IntOffset(x.roundToInt(), y.roundToInt())
+                iconPosition = layoutCoordinates.positionInRoot().run {
+                    IntOffset(x.roundToInt(), y.roundToInt())
+                }
+                iconSize = layoutCoordinates.size
             }
-            iconSize = layoutCoordinates.size
-        }
     )
     Spacer(Modifier.height(10f.dp))
-    if (isHovered){
+    if (isHovered) {
         Popup(
             offset = with(LocalDensity.current) {
                 IntOffset(
@@ -72,7 +73,7 @@ fun MenuIcon(name: String, description: String, modifier: Modifier = Modifier, o
 }
 
 @Composable
-fun DisplayDescription(name : String) {
+fun DisplayDescription(name: String) {
     Image(
         painter = painterResource(name),
         contentDescription = "Descript",
@@ -83,14 +84,7 @@ fun DisplayDescription(name : String) {
 
 @Composable
 fun MenuView(
-    isNodeCreating: Boolean,
-    onNodeCreatingChange: () -> Unit,
-    isClustering: Boolean,
-    onClusteringChange: () -> Unit,
-    isRanked: Boolean,
-    onRankedChange: () -> Unit,
-    isAlgorithmMenuOpen: Boolean,
-    onAlgorithmMenuOpenChange: () -> Unit
+    viewModel: MenuViewModel
 ) {
     Column(
         Modifier.fillMaxHeight().width(Config.menuWidth.dp).background(color = Color(0xFF3D3D3D)),
@@ -98,19 +92,19 @@ fun MenuView(
     ) {
         Spacer(Modifier.height(25f.dp))
         MenuIcon(
-            "Nodes.svg", "AddNode.svg", Modifier.glow(isNodeCreating)
+            "Nodes.svg", "AddNode.svg", Modifier.glow(viewModel.isNodeCreating)
         ) {
-            onNodeCreatingChange()
+            viewModel.onNodeCreatingChange()
         }
         MenuIcon("Ribs.svg", "AddEdge.svg", modifier = Modifier.alpha(0.2f))
-        MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glow(isClustering)) {
-            onClusteringChange()
+        MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glow(viewModel.isClustering)) {
+            viewModel.onClusteringChange()
         }
-        MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glow(isRanked)) {
-            onRankedChange()
+        MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glow(viewModel.isRanked)) {
+            viewModel.onRankedChange()
         }
-        MenuIcon("Algorithm.svg", "Algorithms....svg", Modifier.glow(isAlgorithmMenuOpen)){
-            onAlgorithmMenuOpenChange()
+        MenuIcon("Algorithm.svg", "Algorithms....svg", Modifier.glow(viewModel.isAlgorithmMenuOpen)) {
+            viewModel.onAlgorithmMenuOpenChange()
         }
     }
 }
