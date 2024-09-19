@@ -2,7 +2,9 @@ package viewModel.graph
 
 import Config
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import model.graph.Edge
 
@@ -22,17 +24,6 @@ class EdgeViewModel(
             edge.weight = value
         }
 
-    private var _color = mutableStateOf(color)
-    var color
-        get() = _color.value
-        set(value) {
-            _color.value = value
-        }
-
-    private var _strokeWidth = mutableStateOf(strokeWidth)
-    var strokeWidth
-        get() = _strokeWidth.value
-        set(value) {
-            _strokeWidth.value = value
-        }
+    var color by mutableStateOf(color)
+    var strokeWidth by mutableStateOf(strokeWidth)
 }

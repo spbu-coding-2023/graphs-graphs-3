@@ -44,7 +44,7 @@ fun EdgeCanvasView(
             )
         }
 
-        if (viewModel.showOrientation.value) {
+        if (viewModel.showOrientation) {
             drawLine(
                 start = end,
                 end = end - rotateVector(radiusVectorSecond * 0.8f, 30.0),

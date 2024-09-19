@@ -1,6 +1,8 @@
 package viewModel.graph
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -18,16 +20,12 @@ class UndirectedViewModel(
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
+
     private val _color = mutableStateOf(Color.Black)
-    private val _size = mutableStateOf(10f)
     private val _clustering = mutableStateOf(false)
     private val _ranked = mutableStateOf(false)
 
-    private var size
-        get() = _size.value
-        set(value) {
-            _size.value = value
-        }
+    private var size by mutableStateOf(10f)
 
     val vertices
         get() = _vertices.values
