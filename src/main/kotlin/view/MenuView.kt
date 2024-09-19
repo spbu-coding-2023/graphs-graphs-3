@@ -86,26 +86,25 @@ fun DisplayDescription(name: String) {
 fun MenuView(
     viewModel: MenuViewModel
 ) {
+    var isNodeCreating by viewModel::isNodeCreating
+    var isClustering by viewModel::isClustering
+    var isRanked by viewModel::isRanked
+    var isAlgorithmMenuOpen by viewModel::isAlgorithmMenuOpen
+
     Column(
         Modifier.fillMaxHeight().width(Config.menuWidth.dp).background(color = Color(0xFF3D3D3D)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(Modifier.height(25f.dp))
-        MenuIcon(
-            "Nodes.svg", "AddNode.svg", Modifier.glow(viewModel.isNodeCreating)
-        ) {
-            viewModel.onNodeCreatingChange()
-        }
+        MenuIcon("Nodes.svg", "AddNode.svg", Modifier.glow(isNodeCreating)) { isNodeCreating = !isNodeCreating }
         MenuIcon("Ribs.svg", "AddEdge.svg", modifier = Modifier.alpha(0.2f))
-        MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glow(viewModel.isClustering)) {
-            viewModel.onClusteringChange()
-        }
-        MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glow(viewModel.isRanked)) {
-            viewModel.onRankedChange()
-        }
-        MenuIcon("Algorithm.svg", "Algorithms....svg", Modifier.glow(viewModel.isAlgorithmMenuOpen)) {
-            viewModel.onAlgorithmMenuOpenChange()
-        }
+        MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glow(isClustering)) { isClustering = !isClustering }
+        MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glow(viewModel.isRanked)) { isRanked = !isRanked }
+        MenuIcon(
+            "Algorithm.svg",
+            "Algorithms....svg",
+            Modifier.glow(viewModel.isAlgorithmMenuOpen)
+        ) { isAlgorithmMenuOpen = !isAlgorithmMenuOpen }
     }
 }
 
