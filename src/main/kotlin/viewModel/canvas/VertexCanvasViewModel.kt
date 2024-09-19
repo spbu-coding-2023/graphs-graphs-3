@@ -11,59 +11,23 @@ class VertexCanvasViewModel(
     private val center: MutableState<Offset>,
     private val canvasSize: MutableState<Offset>
 ) {
-    private val _offset = mutableStateOf(
-        calculateOffset()
-    )
-    var offset
-        get() = _offset.value
-        set(value) {
-            _offset.value = value
-        }
+    var color by vertexViewModel::color
 
-    private val _radius = mutableStateOf(calculateRadius())
-    var radius
-        get() = _radius.value
-        set(value) {
-            _radius.value = value
-        }
-
-    var color
-        get() = vertexViewModel.color
-        set(value) {
-            vertexViewModel.color = value
-        }
-
-    private val _strokeWidth = mutableStateOf(calculateStrokeWidth())
-    var strokeWidth
-        get() = _strokeWidth.value
-        set(value) {
-            _strokeWidth.value = value
-        }
-
-    private val _textSize = mutableStateOf(calculateTextSize())
-    var textSize
-        get() = _textSize.value
-        set(value) {
-            _textSize.value = value
-        }
+    val strokeWidth
+        get() = 8f * zoom.value
+    val radius
+        get() = vertexViewModel.radius * zoom.value
+    val offset
+        get() = calculateOffset()
+    val textSize
+        get() = vertexViewModel.radius * 0.6f * zoom.value
 
     fun onDrag(it: Offset): Unit {
         vertexViewModel.onDrag(it * (1f / zoom.value))
-    }
-
-    fun updateVertex() {
-        offset = calculateOffset()
-        radius = calculateRadius()
-        strokeWidth = calculateStrokeWidth()
-        textSize = calculateTextSize()
     }
 
     private fun calculateOffset() = Offset(
         (canvasSize.value.x / 2) + ((vertexViewModel.x - center.value.x) * zoom.value),
         (canvasSize.value.y / 2) + ((vertexViewModel.y - center.value.y) * zoom.value)
     )
-
-    private fun calculateRadius() = vertexViewModel.radius * zoom.value
-    private fun calculateStrokeWidth() = 8f * zoom.value
-    private fun calculateTextSize() = vertexViewModel.radius * 0.6f * zoom.value
 }

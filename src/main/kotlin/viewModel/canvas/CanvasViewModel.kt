@@ -48,7 +48,6 @@ class CanvasViewModel(
             val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
             _vertices[viewModel] = VertexCanvasViewModel(viewModel, _zoom, _center, _canvasSize)
-            updateVertexes()
         }
     }
 
@@ -58,7 +57,6 @@ class CanvasViewModel(
         get() = _zoom.value
         set(value) {
             _zoom.value = value
-            updateVertexes()
             updateEdges()
         }
 
@@ -67,7 +65,6 @@ class CanvasViewModel(
         get() = _center.value
         set(value) {
             _center.value = value
-            updateVertexes()
         }
 
     private val _canvasSize = mutableStateOf(Offset(400f, 400f))
@@ -75,7 +72,6 @@ class CanvasViewModel(
         get() = _canvasSize.value
         set(value) {
             _canvasSize.value = value
-            updateVertexes()
         }
 
     private val _isOrientated = mutableStateOf(false)
@@ -107,10 +103,6 @@ class CanvasViewModel(
 
     val edges
         get() = _edges
-
-    private fun updateVertexes() {
-        vertices.forEach { it.updateVertex() }
-    }
 
     private fun updateEdges() {
         edges.forEach { it.updateEdge(zoom) }
@@ -148,7 +140,6 @@ class CanvasViewModel(
 
     fun onSizeChange(newSize: Float) {
         graphViewModel.onSizeChange(newSize)
-        updateVertexes()
     }
 
     fun onOrientatedChange(isOrientated: Boolean) {
