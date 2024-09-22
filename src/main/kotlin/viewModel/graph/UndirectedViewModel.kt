@@ -99,9 +99,7 @@ class UndirectedViewModel(
     }
 
     fun createVertex(coordinates: Offset): VertexViewModel? {
-        val vertex = graph.addVertex(graph.vertices.last().key + 1)
-
-        if (vertex == null) return null
+        val vertex = graph.addVertex(graph.vertices.last().key + 1) ?: return null
 
         val viewModel = VertexViewModel(
             showVerticesLabels,

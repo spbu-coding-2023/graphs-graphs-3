@@ -32,13 +32,12 @@ class CanvasViewModel(
     var center by mutableStateOf(Offset(0f, 0f))
     var canvasSize by mutableStateOf(Offset(400f, 400f))
     var isOrientated by mutableStateOf(false)
-    
+
     private val _vertices = mutableStateMapOf<VertexViewModel, VertexCanvasViewModel>()
 
     fun createNode(offset: Offset) {
         if (isNodeCreatingMode) {
             val coordinates = (offset - (canvasSize / 2.0F)) * (1 / zoom) + center
-            println(offset - (canvasSize / 2.0F))
             val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
             _vertices[viewModel] = VertexCanvasViewModel(viewModel, this)

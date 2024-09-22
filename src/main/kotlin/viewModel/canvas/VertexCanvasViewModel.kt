@@ -4,30 +4,28 @@ import androidx.compose.ui.geometry.Offset
 import viewModel.graph.VertexViewModel
 
 class VertexCanvasViewModel(
-    val vertexViewModel: VertexViewModel,
+    private val vertexViewModel: VertexViewModel,
     private val canvasViewModel: CanvasViewModel,
 ) {
-    var color by vertexViewModel::color
-    private var zoom by canvasViewModel::zoom
-    private var center by canvasViewModel::center
-    private var canvasSize by canvasViewModel::canvasSize
+    val color by vertexViewModel::color
+    val label by vertexViewModel::label
 
     val strokeWidth
-        get() = 8f * zoom
+        get() = 8f * canvasViewModel.zoom
     val radius
-        get() = vertexViewModel.radius * zoom
+        get() = vertexViewModel.radius * canvasViewModel.zoom
     val offset
         get() = calculateOffset()
 
     val textSize
-        get() = vertexViewModel.radius * 0.6f * zoom
+        get() = vertexViewModel.radius * 0.6f * canvasViewModel.zoom
 
     fun onDrag(it: Offset): Unit {
-        vertexViewModel.onDrag(it * (1f / zoom))
+        vertexViewModel.onDrag(it * (1f / canvasViewModel.zoom))
     }
 
     private fun calculateOffset() = Offset(
-        (canvasSize.x / 2) + ((vertexViewModel.x - center.x) * zoom),
-        (canvasSize.y / 2) + ((vertexViewModel.y - center.y) * zoom)
+        (canvasViewModel.canvasSize.x / 2) + ((vertexViewModel.x - canvasViewModel.center.x) * canvasViewModel.zoom),
+        (canvasViewModel.canvasSize.y / 2) + ((vertexViewModel.y - canvasViewModel.center.y) * canvasViewModel.zoom)
     )
 }
