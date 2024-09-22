@@ -3,8 +3,10 @@ package viewModel.canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -22,74 +24,29 @@ class CanvasViewModel(
 ) {
     private val graphViewModel = UndirectedViewModel(graph, true)
 
-    var isClustering
-        get() = graphViewModel.clustering
-        set(value) {
-            graphViewModel.clustering = value
-        }
+    var isClustering by graphViewModel::clustering
+    var isRanked by graphViewModel::ranked
 
-    var isRanked
-        get() = graphViewModel.ranked
-        set(value) {
-            graphViewModel.ranked = value
-        }
+    var isNodeCreatingMode by mutableStateOf(false)
+    var zoom by mutableStateOf(1f)
+    var center by mutableStateOf(Offset(0f, 0f))
+    var canvasSize by mutableStateOf(Offset(400f, 400f))
+    var isOrientated by mutableStateOf(false)
 
-    val _isNodeCreatingMode = mutableStateOf(false)
-    var isNodeCreatingMode
-        get() = _isNodeCreatingMode.value
-        set(value) {
-            _isNodeCreatingMode.value = value
-        }
+    private val _vertices = mutableStateMapOf<VertexViewModel, VertexCanvasViewModel>()
 
     fun createNode(offset: Offset) {
         if (isNodeCreatingMode) {
             val coordinates = (offset - (canvasSize / 2.0F)) * (1 / zoom) + center
-            println(offset - (canvasSize / 2.0F))
             val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
-            _vertices[viewModel] = VertexCanvasViewModel(viewModel, _zoom, _center, _canvasSize)
-            updateVertexes()
+            _vertices[viewModel] = VertexCanvasViewModel(viewModel, this)
         }
     }
 
-
-    private val _zoom = mutableStateOf(1f)
-    var zoom
-        get() = _zoom.value
-        set(value) {
-            _zoom.value = value
-            updateVertexes()
-            updateEdges()
-        }
-
-    private val _center = mutableStateOf(Offset(0f, 0f))
-    var center
-        get() = _center.value
-        set(value) {
-            _center.value = value
-            updateVertexes()
-        }
-
-    private val _canvasSize = mutableStateOf(Offset(400f, 400f))
-    var canvasSize
-        get() = _canvasSize.value
-        set(value) {
-            _canvasSize.value = value
-            updateVertexes()
-        }
-
-    private val _isOrientated = mutableStateOf(false)
-    var isOrientated
-        get() = _isOrientated.value
-        set(value) {
-            _isOrientated.value = value
-        }
-
-    private val _vertices = mutableStateMapOf<VertexViewModel, VertexCanvasViewModel>()
-
     init {
         graphViewModel.vertices.forEach { v ->
-            _vertices[v] = VertexCanvasViewModel(v, _zoom, _center, _canvasSize)
+            _vertices[v] = VertexCanvasViewModel(v, this)
         }
     }
 
@@ -99,7 +56,7 @@ class CanvasViewModel(
         val vertex2 =
             _vertices[it.second] ?: throw IllegalStateException("There is no VertexCanvasViewModel for ${it.second}")
 
-        EdgeCanvasViewModel(vertex1, vertex2, it.color, it.strokeWidth, zoom, _isOrientated)
+        EdgeCanvasViewModel(vertex1, vertex2, it.color, it, this)
     }
 
     val vertices
@@ -107,14 +64,6 @@ class CanvasViewModel(
 
     val edges
         get() = _edges
-
-    private fun updateVertexes() {
-        vertices.forEach { it.updateVertex() }
-    }
-
-    private fun updateEdges() {
-        edges.forEach { it.updateEdge(zoom) }
-    }
 
     val onScroll: AwaitPointerEventScope.(PointerEvent) -> Unit = {
         if (it.changes.first().scrollDelta.y > 0) {
@@ -148,18 +97,9 @@ class CanvasViewModel(
 
     fun onSizeChange(newSize: Float) {
         graphViewModel.onSizeChange(newSize)
-        updateVertexes()
     }
 
     fun onOrientatedChange(isOrientated: Boolean) {
         this.isOrientated = isOrientated
     }
-
-//    fun getViews(): Collection<VertexCanvasViewModel> {
-//        if (Config.optimizeCanvas) {
-//            return _vertices.filter { abs(it.value.offset.x) < canvasSize.x && abs(it.value.offset.y) < canvasSize.y }.values
-//        }
-//
-//        return _vertices.values
-//    }
 }

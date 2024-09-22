@@ -1,19 +1,17 @@
 package viewModel.canvas
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
+import viewModel.graph.EdgeViewModel
 
 class EdgeCanvasViewModel(
     val first: VertexCanvasViewModel,
     val second: VertexCanvasViewModel,
     val color: Color,
-    strokeWidth: Float,
-    zoom: Float,
-    val showOrientation: MutableState<Boolean>
+    val edgeViewModel: EdgeViewModel,
+    private val canvasViewModel: CanvasViewModel,
 ) {
-    var strokeWidth = strokeWidth * (zoom)
+    var showOrientation by canvasViewModel::isOrientated
 
-    fun updateEdge(zoom: Float) {
-        strokeWidth = 8f * zoom
-    }
+    val strokeWidth
+        get() = edgeViewModel.strokeWidth * canvasViewModel.zoom
 }

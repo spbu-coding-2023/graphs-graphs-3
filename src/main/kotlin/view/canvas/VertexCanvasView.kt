@@ -31,6 +31,6 @@ fun VertexCanvasView(
             .onDrag(onDrag = viewModel::onDrag),
         contentAlignment = Alignment.Center
     ) {
-        MyText(viewModel.vertexViewModel.label, viewModel.textSize.value)
+        MyText(viewModel.label, viewModel.textSize.value)
     }
 }
