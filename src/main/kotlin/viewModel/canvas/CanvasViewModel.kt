@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.awtEventOrNull
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
@@ -29,13 +30,18 @@ class CanvasViewModel(
     var isClustering by graphViewModel::clustering
     var isRanked by graphViewModel::ranked
 
+    var isEdgeCreatingMode by mutableStateOf(false)
+    var pickedNodeForEdgeCreating by mutableStateOf<VertexCanvasViewModel?>(null)
+
     var isNodeCreatingMode by mutableStateOf(false)
+    var edgesCount by mutableStateOf(0)
     var zoom by mutableStateOf(1f)
     var center by mutableStateOf(Offset(0f, 0f))
     var canvasSize by mutableStateOf(Offset(400f, 400f))
     var isOrientated by mutableStateOf(false)
 
     private val _vertices = mutableStateMapOf<VertexViewModel, VertexCanvasViewModel>()
+    private val _edges = mutableStateMapOf<VertexCanvasViewModel, ArrayList<EdgeCanvasViewModel>>()
 
     private fun getVertex(vm: VertexViewModel): VertexCanvasViewModel {
         return _vertices[vm] ?: throw IllegalArgumentException("There is no VertexCanvasViewModel for $vm")
@@ -54,24 +60,24 @@ class CanvasViewModel(
         graphViewModel.vertices.forEach { v ->
             _vertices[v] = VertexCanvasViewModel(v, this)
         }
-    }
 
-    private val _edges = graphViewModel.adjacencyList.mapValues {
-        it.value.map { edgeViewModel ->
-            val vertex1 = getVertex(edgeViewModel.first)
-            val vertex2 = getVertex(edgeViewModel.second)
+        graphViewModel.adjacencyList.forEach {
+            _edges[getVertex(it.key)] = ArrayList(it.value.map { edgeViewModel ->
+                val vertex1 = getVertex(edgeViewModel.first)
+                val vertex2 = getVertex(edgeViewModel.second)
 
-            EdgeCanvasViewModel(vertex1, vertex2, edgeViewModel, this)
+                EdgeCanvasViewModel(vertex1, vertex2, edgeViewModel, this)
+            }.toList())
         }
-    }.mapKeys {
-        getVertex(it.key)
+
+        edgesCount = _edges.values.flatten().size
     }
 
     val vertices
         get() = _vertices.values
 
     val edges
-        get() = _edges.values.flatten()
+        get() = _edges.values
 
     val onScroll: AwaitPointerEventScope.(PointerEvent) -> Unit = {
         if (it.changes.first().scrollDelta.y > 0) {
@@ -120,5 +126,35 @@ class CanvasViewModel(
 
     fun resetEdgesColorToDefault() {
         graphViewModel.resetEdgesColorToDefault()
+    }
+
+    fun createEdge(first: VertexCanvasViewModel, second: VertexCanvasViewModel) {
+        val edgesVM = graphViewModel.createEdge(first.vertexViewModel, second.vertexViewModel)
+        val firstCanvasEdgeList = _edges[first] ?: return
+        val secondCanvasEdgeList = _edges[second] ?: return
+
+        if (edgesVM != null) {
+            firstCanvasEdgeList.add(EdgeCanvasViewModel(first, second, edgesVM.first, this))
+            secondCanvasEdgeList.add(EdgeCanvasViewModel(second, first, edgesVM.second, this))
+        }
+
+        edgesCount++
+    }
+
+    fun onClickNodeEdgeCreating(vm: VertexCanvasViewModel) {
+        if (!isEdgeCreatingMode) return
+
+        if (pickedNodeForEdgeCreating == vm) {
+            pickedNodeForEdgeCreating = null
+            return
+        }
+
+        if (pickedNodeForEdgeCreating == null) {
+            pickedNodeForEdgeCreating = vm
+            return
+        }
+
+        createEdge(pickedNodeForEdgeCreating ?: return, vm)
+        pickedNodeForEdgeCreating = null
     }
 }

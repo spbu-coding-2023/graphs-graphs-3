@@ -7,6 +7,7 @@ import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,8 +27,13 @@ fun VertexCanvasView(
         modifier
             .size(viewModel.radius * 2)
             .offset(viewModel.offset.x.dp, viewModel.offset.y.dp)
-            .border(color = viewModel.color, width = viewModel.strokeWidth.dp, shape = CircleShape)
+            .border(
+                color = if (viewModel.canvasViewModel.pickedNodeForEdgeCreating != viewModel) viewModel.color else Color.Green,
+                width = viewModel.strokeWidth.dp,
+                shape = CircleShape
+            )
             .background(color = Color(0xFF242424), shape = CircleShape)
+            .onClick { viewModel.onClickWhenEdgeCreating() }
             .onDrag(onDrag = viewModel::onDrag),
         contentAlignment = Alignment.Center
     ) {

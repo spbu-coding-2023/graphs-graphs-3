@@ -87,6 +87,7 @@ fun MenuView(
     viewModel: MenuViewModel
 ) {
     var isNodeCreating by viewModel::isNodeCreating
+    var isEdgeCreating by viewModel::isEdgeCreating
     var isClustering by viewModel::isClustering
     var isRanked by viewModel::isRanked
     var isAlgorithmMenuOpen by viewModel::isAlgorithmMenuOpen
@@ -97,7 +98,7 @@ fun MenuView(
     ) {
         Spacer(Modifier.height(25f.dp))
         MenuIcon("Nodes.svg", "AddNode.svg", Modifier.glow(isNodeCreating)) { isNodeCreating = !isNodeCreating }
-        MenuIcon("Ribs.svg", "AddEdge.svg", modifier = Modifier.alpha(0.2f))
+        MenuIcon("Ribs.svg", "AddEdge.svg", Modifier.glow(isEdgeCreating)) { isEdgeCreating = !isEdgeCreating }
         MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glow(isClustering)) { isClustering = !isClustering }
         MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glow(viewModel.isRanked)) { isRanked = !isRanked }
         MenuIcon(

@@ -4,8 +4,8 @@ import androidx.compose.ui.geometry.Offset
 import viewModel.graph.VertexViewModel
 
 class VertexCanvasViewModel(
-    private val vertexViewModel: VertexViewModel,
-    private val canvasViewModel: CanvasViewModel,
+    val vertexViewModel: VertexViewModel,
+    val canvasViewModel: CanvasViewModel,
 ) {
     val color by vertexViewModel::color
     val label by vertexViewModel::label
@@ -22,6 +22,10 @@ class VertexCanvasViewModel(
 
     fun onDrag(it: Offset): Unit {
         vertexViewModel.onDrag(it * (1f / canvasViewModel.zoom))
+    }
+
+    fun onClickWhenEdgeCreating() {
+        canvasViewModel.onClickNodeEdgeCreating(this)
     }
 
     private fun calculateOffset() = Offset(
