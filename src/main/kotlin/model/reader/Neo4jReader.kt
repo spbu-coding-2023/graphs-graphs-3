@@ -1,9 +1,6 @@
 package model.reader
 
-import model.graph.Edge
-import model.graph.Graph
-import model.graph.UndirectedGraph
-import model.graph.Vertex
+import model.graph.*
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.GraphDatabase
 import org.neo4j.driver.Transaction
@@ -57,6 +54,12 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
                 "graphName" to graphName
             )
         )
+        tx.run(
+            "MATCH (g:Graph {graphName: \$graphName}) DETACH DELETE g",
+            mapOf(
+                "graphName" to graphName
+            )
+        )
 
         if (txInput == null) {
             tx.commit()
@@ -68,6 +71,21 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
         val transaction = session.beginTransaction()
 
         deleteGraph(nameGraph, transaction)
+
+        val graphType: String = when (graph) {
+            is WeightedDirectedGraph -> "WeightedUndirected"
+            is WeightedGraph -> "Weighted"
+            is DirectedGraph -> "Directed"
+            else -> "Undirected"
+        }
+
+        transaction.run(
+            "MERGE (g:Graph {graphName: \$graphName, type: \$graphType})",
+            mapOf(
+                "graphName" to nameGraph,
+                "graphType" to graphType
+            )
+        )
 
         graph.vertices.forEach { v ->
             createNode(v, nameGraph, transaction)
@@ -82,9 +100,20 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
     }
 
     override fun loadGraph(filepath: String, nameGraph: String): Graph {
-        val graph = UndirectedGraph()
+        var graph: Graph = UndirectedGraph()
 
         session.executeRead { tx ->
+            val graphType =
+                tx.run("MATCH (g:Graph {graphName: \$graphName}) return g", mapOf("graphName" to nameGraph)).single()
+                    .get("g").get("type").asString()
+
+            graph = when (graphType) {
+                "Undirected" -> UndirectedGraph()
+                "Directed" -> DirectedGraph()
+                "Weighted" -> WeightedGraph()
+                else -> WeightedDirectedGraph()
+            }
+
             tx.run("MATCH (n:Node {graphName: \$graphName}) return n", mapOf("graphName" to nameGraph))
                 .forEach { v -> graph.addVertex((v.get("n").get("key").asInt())) }
 
