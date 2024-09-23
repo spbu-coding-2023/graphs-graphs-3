@@ -78,6 +78,7 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
         }
 
         transaction.commit()
+        transaction.close()
     }
 
     override fun loadGraph(filepath: String, nameGraph: String): Graph {
