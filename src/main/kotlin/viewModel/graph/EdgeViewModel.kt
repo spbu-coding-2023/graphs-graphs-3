@@ -11,7 +11,7 @@ import model.graph.Edge
 class EdgeViewModel(
     val first: VertexViewModel,
     val second: VertexViewModel,
-    private val edge: Edge,
+    val edge: Edge,
     private val _weightVisibility: State<Boolean>,
     color: Color = Config.Edge.color,
     strokeWidth: Float = Config.Edge.strokeWidth

@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
+import model.graph.Edge
 import model.graph.UndirectedGraph
 import view.HEADER_HEIGHT
 import view.MENU_WIDTH
+import viewModel.graph.EdgeViewModel
 import viewModel.graph.UndirectedViewModel
 import viewModel.graph.VertexViewModel
 
@@ -35,6 +37,10 @@ class CanvasViewModel(
 
     private val _vertices = mutableStateMapOf<VertexViewModel, VertexCanvasViewModel>()
 
+    private fun getVertex(vm: VertexViewModel): VertexCanvasViewModel {
+        return _vertices[vm] ?: throw IllegalArgumentException("There is no VertexCanvasViewModel for $vm")
+    }
+
     fun createNode(offset: Offset) {
         if (isNodeCreatingMode) {
             val coordinates = (offset - (canvasSize / 2.0F)) * (1 / zoom) + center
@@ -50,20 +56,22 @@ class CanvasViewModel(
         }
     }
 
-    private val _edges = graphViewModel.adjacencyList.map { it.value }.flatten().map {
-        val vertex1 =
-            _vertices[it.first] ?: throw IllegalStateException("There is no VertexCanvasViewModel for ${it.first}")
-        val vertex2 =
-            _vertices[it.second] ?: throw IllegalStateException("There is no VertexCanvasViewModel for ${it.second}")
+    private val _edges = graphViewModel.adjacencyList.mapValues {
+        it.value.map { edgeViewModel ->
+            val vertex1 = getVertex(edgeViewModel.first)
+            val vertex2 = getVertex(edgeViewModel.second)
 
-        EdgeCanvasViewModel(vertex1, vertex2, it.color, it, this)
+            EdgeCanvasViewModel(vertex1, vertex2, edgeViewModel, this)
+        }
+    }.mapKeys {
+        getVertex(it.key)
     }
 
     val vertices
         get() = _vertices.values
 
     val edges
-        get() = _edges
+        get() = _edges.values.flatten()
 
     val onScroll: AwaitPointerEventScope.(PointerEvent) -> Unit = {
         if (it.changes.first().scrollDelta.y > 0) {
@@ -101,5 +109,16 @@ class CanvasViewModel(
 
     fun onOrientatedChange(isOrientated: Boolean) {
         this.isOrientated = isOrientated
+    }
+
+    /*
+    * Change edges' color
+    * */
+    fun changeEdgesColor(edges: List<Pair<Edge, Color>>) {
+        graphViewModel.changeEdgesColor(edges)
+    }
+
+    fun resetEdgesColorToDefault() {
+        graphViewModel.resetEdgesColorToDefault()
     }
 }

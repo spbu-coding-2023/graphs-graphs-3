@@ -1,5 +1,6 @@
 package viewModel.graph
 
+import Config
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import model.algorithm.Clustering
 import model.algorithm.PageRank
+import model.graph.Edge
 import model.graph.UndirectedGraph
 import model.graph.Vertex
 
@@ -113,6 +115,34 @@ class UndirectedViewModel(
         _vertices[vertex] = viewModel
 
         return viewModel
+    }
+
+    /*
+    * Change edges' color
+    * */
+    fun changeEdgesColor(edges: List<Pair<Edge, Color>>) {
+        edges.forEach { p ->
+            val edge = p.first
+            val color = p.second
+
+            val vertex1 = _vertices[edge.first] ?: return
+            val vertex2 = _vertices[edge.second] ?: return
+
+            val edgeViewModelList1 = _adjacencyList[vertex1] ?: return
+            val edgeViewModel1 = edgeViewModelList1.find { it.second == vertex2 } ?: return
+            edgeViewModel1.color = color
+
+            val edgeViewModelList2 = _adjacencyList[vertex2] ?: return
+            val edgeViewModel2 = edgeViewModelList2.find { it.second == vertex1 } ?: return
+            edgeViewModel2.color = color
+        }
+    }
+
+    /*
+    * Reset current color on all edges to default in Config
+    * */
+    fun resetEdgesColorToDefault() {
+        adjacencyList.values.flatten().forEach { it.color = Config.Edge.color }
     }
 
     init {
