@@ -67,6 +67,9 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
         }
     }
 
+    /**
+     * Save graph to Neo4j Database
+     */
     override fun saveGraph(graph: Graph, filepath: String, nameGraph: String) {
         val transaction = session.beginTransaction()
 
@@ -99,6 +102,12 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
         transaction.close()
     }
 
+    /**
+     * Load graph to Neo4j Database
+     *
+     * @return the loaded graph
+     * @throws NoSuchRecordException if there is no graph with given graph name
+     */
     override fun loadGraph(filepath: String, nameGraph: String): Graph {
         var graph: Graph = UndirectedGraph()
 
