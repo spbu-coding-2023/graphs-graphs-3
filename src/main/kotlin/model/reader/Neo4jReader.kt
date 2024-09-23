@@ -92,7 +92,6 @@ class Neo4jReader(uri: String, user: String, password: String) : Reader {
                 mapOf("graphName" to nameGraph)
             ).forEach { v ->
                 val values = v.values()
-                println(v)
                 graph.addEdge(
                     values[0].get("key").asInt(),
                     values[1].get("key").asInt(),
