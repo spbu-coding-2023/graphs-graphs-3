@@ -32,7 +32,10 @@ fun displayAlgorithmMenu(name: String, viewModel: MenuViewModel) {
         ImageResource("Bellman-Ford.svg") {},
         ImageResource("IslandTree.svg") {},
         ImageResource("StrongConnectivityComponent.svg") {},
-        ImageResource("FindCycle.svg") {}
+        ImageResource("FindCycle.svg") {
+            viewModel.canvasViewModel.isEdgeFindCycleMode = !viewModel.canvasViewModel.isEdgeFindCycleMode
+            viewModel.canvasViewModel.resetEdgesColorToDefault()
+        }
     )
 
     Box(

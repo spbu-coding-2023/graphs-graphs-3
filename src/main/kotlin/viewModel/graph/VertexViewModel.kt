@@ -11,7 +11,7 @@ import model.graph.Vertex
 
 class VertexViewModel(
     private val _labelVisible: Boolean,
-    private val vertex: Vertex,
+    val vertex: Vertex,
     x: Float = 0f,
     y: Float = 0f,
     color: Color = Color.Black,

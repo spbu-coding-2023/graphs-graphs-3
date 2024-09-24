@@ -55,7 +55,7 @@ class UndirectedViewModel(
 
             updateSizes()
         }
-    
+
     var bridgeFinded
         get() = _bridgeFinded.value
         set(value) {
@@ -66,8 +66,7 @@ class UndirectedViewModel(
             }
             if (bridgeFinded) {
                 changeEdgesColor(BridgesWthColor)
-            }
-            else{
+            } else {
                 resetEdgesColorToDefault()
             }
         }
@@ -146,6 +145,7 @@ class UndirectedViewModel(
         )
 
         _vertices[vertex] = viewModel
+        _adjacencyList[viewModel] = ArrayList()
 
         return viewModel
     }

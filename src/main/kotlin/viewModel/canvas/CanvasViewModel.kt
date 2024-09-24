@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
+import model.algorithm.FindCycle
 import model.graph.Edge
 import model.graph.UndirectedGraph
 import view.HEADER_HEIGHT
@@ -33,6 +34,8 @@ class CanvasViewModel(
 
     var isEdgeCreatingMode by mutableStateOf(false)
     var pickedNodeForEdgeCreating by mutableStateOf<VertexCanvasViewModel?>(null)
+
+    var isEdgeFindCycleMode by mutableStateOf(false)
 
     var isNodeCreatingMode by mutableStateOf(false)
     var edgesCount by mutableStateOf(0)
@@ -54,6 +57,7 @@ class CanvasViewModel(
             val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
             _vertices[viewModel] = VertexCanvasViewModel(viewModel, this)
+            _edges[getVertex(viewModel)] = ArrayList()
         }
     }
 
@@ -142,6 +146,11 @@ class CanvasViewModel(
         edgesCount++
     }
 
+    fun onClick(vm: VertexCanvasViewModel) {
+        onClickNodeEdgeCreating(vm)
+        onClickNodeFindCycle(vm)
+    }
+
     fun onClickNodeEdgeCreating(vm: VertexCanvasViewModel) {
         if (!isEdgeCreatingMode) return
 
@@ -157,5 +166,13 @@ class CanvasViewModel(
 
         createEdge(pickedNodeForEdgeCreating ?: return, vm)
         pickedNodeForEdgeCreating = null
+    }
+
+    fun onClickNodeFindCycle(vm: VertexCanvasViewModel) {
+        if (!isEdgeFindCycleMode) return
+
+        changeEdgesColor(FindCycle(graph).calculate(vm.vertexViewModel.vertex).map { Pair(it, Color.Red) }
+            .toMutableList())
+        isEdgeFindCycleMode = false
     }
 }

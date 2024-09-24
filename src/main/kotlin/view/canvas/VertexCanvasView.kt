@@ -33,7 +33,7 @@ fun VertexCanvasView(
                 shape = CircleShape
             )
             .background(color = Color(0xFF242424), shape = CircleShape)
-            .onClick { viewModel.onClickWhenEdgeCreating() }
+            .onClick { viewModel.onClick(viewModel) }
             .onDrag(onDrag = viewModel::onDrag),
         contentAlignment = Alignment.Center
     ) {
