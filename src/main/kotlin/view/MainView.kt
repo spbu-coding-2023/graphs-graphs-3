@@ -23,14 +23,15 @@ val MENU_WIDTH = Config.menuWidth
 
 @Composable
 fun DisplayAlgorithmMenu(name: String, viewModel: MenuViewModel, onClick: () -> Unit = {}) {
+    var isBridgeFinded by viewModel::isFinded
 
     val imageResources = listOf(
-        "FindBridge.svg",
-        "Dijkstra.svg",
-        "Bellman-Ford.svg",
-        "IslandTree.svg",
-        "StrongConnectivityComponent.svg",
-        "FindCycle.svg"
+        mapOf("icon" to "FindBridge.svg", "onClick" to { isBridgeFinded = !isBridgeFinded }),
+        mapOf("icon" to "Dijkstra.svg", "onClick" to {}),
+        mapOf("icon" to "Bellman-Ford.svg", "onClick" to {}),
+        mapOf("icon" to "IslandTree.svg", "onClick" to {}),
+        mapOf("icon" to "StrongConnectivityComponent.svg", "onClick" to {}),
+        mapOf("icon" to "FindCycle.svg", "onClick" to {})
     )
     Box(
         modifier = Modifier.padding(top = 240.dp, start = 80.dp)
@@ -50,8 +51,10 @@ fun DisplayAlgorithmMenu(name: String, viewModel: MenuViewModel, onClick: () -> 
                 .background(Color.Transparent)
                 .padding(top = 150.dp, start = 30.dp)
         ) {
-            items(imageResources) { image ->
-                ImageButton(imageResourceId = image, onClick = onClick, viewModel)
+            items(imageResources) { button ->
+                val icon = button["icon"] as String
+                val onClickAction = button["onClick"] as? () -> Unit ?: {}
+                ImageButton(imageResourceId = icon, onClick = onClickAction, viewModel)
             }
         }
     }
@@ -67,14 +70,14 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
             .background(Color(0x00))
     ) {
         val modifier = when (imageResourceId) {
-            "FindBridge.svg" -> Modifier.glowRec(viewModel.isFinded).onClick(onClick = onClick)
+            "FindBridge.svg" -> Modifier.glowRec(viewModel.isFinded)
             else -> Modifier.alpha(0.2f)
         }
 
         Image(
             painter = painterResource(imageResourceId),
             contentDescription = "Button Image",
-            modifier = modifier.size(445.dp, 59.dp),
+            modifier = modifier.size(445.dp, 59.dp).onClick(onClick = onClick),
             contentScale = ContentScale.Crop
         )
     }
@@ -82,9 +85,7 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
 
 @Composable
 fun MainView(mainViewModel: MainViewModel) {
-
     var isBridgeFinded by mainViewModel.menuViewModel::isFinded
-
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
         MenuView(mainViewModel.menuViewModel)
 
