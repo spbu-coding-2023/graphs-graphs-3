@@ -35,8 +35,11 @@ fun CanvasView(
             }
             .clipToBounds()
     ) {
-        viewModel.edges.forEach {
-            EdgeCanvasView(it)
+        // for rerender when update
+        if (viewModel.edgesCount > 0) {
+            viewModel.edges.flatten().forEach {
+                EdgeCanvasView(it)
+            }
         }
 
         viewModel.vertices.forEach {

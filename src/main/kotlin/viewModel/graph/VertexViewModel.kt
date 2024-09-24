@@ -28,6 +28,10 @@ class VertexViewModel(
     val labelVisibility
         get() = _labelVisible
 
+    fun getKey(): Int {
+        return vertex.key
+    }
+
     fun onDrag(it: Offset): Unit {
         x += it.x
         y += it.y

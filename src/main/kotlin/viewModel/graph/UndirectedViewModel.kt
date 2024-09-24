@@ -51,6 +51,18 @@ class UndirectedViewModel(
             updateSizes()
         }
 
+    fun createEdge(first: VertexViewModel, second: VertexViewModel): Pair<EdgeViewModel, EdgeViewModel>? {
+        val edge = graph.addEdge(first.getKey(), second.getKey()) ?: return null
+
+        val firstEdge = EdgeViewModel(first, second, edge, mutableStateOf(false))
+        val secondEdge = EdgeViewModel(second, first, edge, mutableStateOf(false))
+
+        _adjacencyList[first]?.add(EdgeViewModel(first, second, edge, mutableStateOf(false)))
+        _adjacencyList[second]?.add(EdgeViewModel(second, first, edge, mutableStateOf(false)))
+
+        return Pair(firstEdge, secondEdge)
+    }
+
     private fun getColor(group: Int): Color {
         if (clustering) {
             val color = groupColors[group]

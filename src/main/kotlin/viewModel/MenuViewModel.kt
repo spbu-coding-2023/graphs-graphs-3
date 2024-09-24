@@ -9,6 +9,7 @@ class MenuViewModel(
     val canvasViewModel: CanvasViewModel
 ) {
     var isNodeCreating by canvasViewModel::isNodeCreatingMode
+    var isEdgeCreating by canvasViewModel::isEdgeCreatingMode
     var isClustering by canvasViewModel::isClustering
     var isRanked by canvasViewModel::isRanked
     var isAlgorithmMenuOpen by mutableStateOf(false)
