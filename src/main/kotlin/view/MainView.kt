@@ -72,6 +72,7 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
     ) {
         val modifier = when (imageResourceId) {
             "FindBridge.svg" -> Modifier.glowRec(viewModel.isFinded)
+            "FindCycle.svg" -> Modifier.glowRec(viewModel.canvasViewModel.isEdgeFindCycleMode)
             else -> Modifier.alpha(0.2f)
         }
 

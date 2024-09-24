@@ -171,8 +171,8 @@ class CanvasViewModel(
     fun onClickNodeFindCycle(vm: VertexCanvasViewModel) {
         if (!isEdgeFindCycleMode) return
 
+        resetEdgesColorToDefault()
         changeEdgesColor(FindCycle(graph).calculate(vm.vertexViewModel.vertex).map { Pair(it, Color.Red) }
             .toMutableList())
-        isEdgeFindCycleMode = false
     }
 }
