@@ -29,7 +29,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
-
+    implementation("org.neo4j.driver", "neo4j-java-driver", "5.6.0")
 }
 
 compose.desktop {
@@ -49,9 +49,9 @@ tasks.test {
     finalizedBy("jacocoTestReport")
 }
 
-tasks.jacocoTestReport{
+tasks.jacocoTestReport {
     dependsOn(tasks.test)
-    reports{
+    reports {
         xml.required.set(true)
         html.required.set(true)
     }
