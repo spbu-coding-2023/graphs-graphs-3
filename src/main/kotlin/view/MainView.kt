@@ -22,13 +22,17 @@ val MENU_WIDTH = Config.menuWidth
 
 @Composable
 fun displayAlgorithmMenu(name: String, viewModel: MenuViewModel) {
-    var isBridgeFinded by viewModel::isFinded
+    var isBridgeFinded by viewModel::isBridgeFinded
+    var isDijkstraMode by viewModel::isDijkstraMode
 
     data class ImageResource(val icon: String, val onClick: () -> Unit)
 
     val imageResources = listOf(
         ImageResource("FindBridge.svg") { isBridgeFinded = !isBridgeFinded },
-        ImageResource("Dijkstra.svg") {},
+        ImageResource("Dijkstra.svg") {
+            isDijkstraMode = !isDijkstraMode
+            if (!isDijkstraMode) viewModel.canvasViewModel.resetEdgesColorToDefault()
+        },
         ImageResource("Bellman-Ford.svg") {},
         ImageResource("IslandTree.svg") {},
         ImageResource("StrongConnectivityComponent.svg") {},
@@ -71,7 +75,8 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
             .background(Color(0x00))
     ) {
         val modifier = when (imageResourceId) {
-            "FindBridge.svg" -> Modifier.glowRec(viewModel.isFinded)
+            "FindBridge.svg" -> Modifier.glowRec(viewModel.isBridgeFinded)
+            "Dijkstra.svg" -> Modifier.glowRec(viewModel.isDijkstraMode)
             "FindCycle.svg" -> Modifier.glowRec(viewModel.canvasViewModel.isEdgeFindCycleMode)
             else -> Modifier.alpha(0.2f)
         }

@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import model.algorithm.Clustering
+import model.algorithm.Dijkstra
 import model.algorithm.FindBridges
 import model.algorithm.PageRank
 import model.graph.Edge

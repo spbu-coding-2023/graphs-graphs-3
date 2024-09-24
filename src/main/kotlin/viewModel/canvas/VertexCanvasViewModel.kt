@@ -24,7 +24,8 @@ class VertexCanvasViewModel(
         vertexViewModel.onDrag(it * (1f / canvasViewModel.zoom))
     }
 
-    fun onClick(vm: VertexCanvasViewModel) {
+
+    fun onClick() {
         canvasViewModel.onClick(this)
     }
 

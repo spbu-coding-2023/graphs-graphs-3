@@ -1,5 +1,6 @@
 package viewModel.canvas
 
+import Config
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
+import model.algorithm.Dijkstra
 import model.algorithm.FindCycle
 import model.graph.Edge
 import model.graph.UndirectedGraph
@@ -33,7 +35,9 @@ class CanvasViewModel(
     var isFinded by graphViewModel::bridgeFinded
 
     var isEdgeCreatingMode by mutableStateOf(false)
+    var isDijkstraMode by mutableStateOf(false)
     var pickedNodeForEdgeCreating by mutableStateOf<VertexCanvasViewModel?>(null)
+    var pickedNodeForDijkstra by mutableStateOf<VertexCanvasViewModel?>(null)
 
     var isEdgeFindCycleMode by mutableStateOf(false)
 
@@ -126,10 +130,12 @@ class CanvasViewModel(
     * Change edges' color
     * */
     fun changeEdgesColor(edges: MutableList<Pair<Edge, Color>>) {
+        println(edges)
         graphViewModel.changeEdgesColor(edges)
     }
 
     fun resetEdgesColorToDefault() {
+        println("reset")
         graphViewModel.resetEdgesColorToDefault()
     }
 
@@ -149,6 +155,7 @@ class CanvasViewModel(
     fun onClick(vm: VertexCanvasViewModel) {
         onClickNodeEdgeCreating(vm)
         onClickNodeFindCycle(vm)
+        onClickNodeDijkstraOn(vm)
     }
 
     fun onClickNodeEdgeCreating(vm: VertexCanvasViewModel) {
@@ -172,7 +179,36 @@ class CanvasViewModel(
         if (!isEdgeFindCycleMode) return
 
         resetEdgesColorToDefault()
+        println(graph)
         changeEdgesColor(FindCycle(graph).calculate(vm.vertexViewModel.vertex).map { Pair(it, Color.Red) }
             .toMutableList())
+    }
+
+    fun onClickNodeDijkstraOn(vm: VertexCanvasViewModel) {
+        if (!isDijkstraMode) {
+            return
+        }
+
+        if (pickedNodeForDijkstra == vm) {
+            pickedNodeForDijkstra = null
+            return
+        }
+
+        if (pickedNodeForDijkstra == null) {
+            pickedNodeForDijkstra = vm
+            return
+        }
+
+        val firstVertex =
+            pickedNodeForDijkstra ?: throw IllegalStateException("there is no node in pickedNodeForDijkstra method")
+
+        val dijksta = Dijkstra(graph)
+        val path = dijksta.findShortestPath(firstVertex.vertexViewModel.getKey(), vm.vertexViewModel.getKey()) ?: return
+        val edges = dijksta.triplesToEdges(path)
+
+        val PathWthColor = edges.map { it to Config.Edge.dijkstraColor }
+        resetEdgesColorToDefault()
+        changeEdgesColor(PathWthColor.toMutableList())
+        pickedNodeForDijkstra = null
     }
 }
