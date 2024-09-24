@@ -51,14 +51,7 @@ fun DisplayAlgorithmMenu(name: String, viewModel: MenuViewModel, onClick: () -> 
                 .padding(top = 150.dp, start = 30.dp)
         ) {
             items(imageResources) { image ->
-                ImageButton(
-                    imageResourceId = image,
-                    onClick = {
-                        if(image == "FindBridge.svg"){
-                            onClick()
-                            }
-                    }, viewModel
-                )
+                ImageButton(imageResourceId = image, onClick = onClick, viewModel)
             }
         }
     }
@@ -73,22 +66,17 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
             .padding(1.dp)
             .background(Color(0x00))
     ) {
-        if (imageResourceId == "FindBridge.svg") {
-            Image(
-                painter = painterResource(imageResourceId),
-                contentDescription = "Button Image",
-                modifier = Modifier.glowRec(viewModel.isFinded).size(445.dp, 59.dp).onClick(onClick = onClick),
-                contentScale = ContentScale.Crop
-            )
+        val modifier = when (imageResourceId) {
+            "FindBridge.svg" -> Modifier.glowRec(viewModel.isFinded).onClick(onClick = onClick)
+            else -> Modifier.alpha(0.2f)
         }
-        else {
-            Image(
-                painter = painterResource(imageResourceId),
-                contentDescription = "Button Image",
-                modifier = Modifier.alpha(0.2f).size(445.dp, 59.dp).onClick(onClick = onClick),
-                contentScale = ContentScale.Crop
-            )
-        }
+
+        Image(
+            painter = painterResource(imageResourceId),
+            contentDescription = "Button Image",
+            modifier = modifier.size(445.dp, 59.dp),
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
@@ -107,9 +95,10 @@ fun MainView(mainViewModel: MainViewModel) {
     }
 
     if (mainViewModel.menuViewModel.isAlgorithmMenuOpen) {
-        DisplayAlgorithmMenu("DownMenuAlgorithm.svg",
+        DisplayAlgorithmMenu(
+            "DownMenuAlgorithm.svg",
             mainViewModel.menuViewModel
-        ){ isBridgeFinded = !isBridgeFinded }
+        ) { isBridgeFinded = !isBridgeFinded }
     }
 
     SettingsView(mainViewModel.settingsViewModel)
