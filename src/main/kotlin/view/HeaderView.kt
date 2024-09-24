@@ -4,26 +4,22 @@ import Config
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.key.Key.Companion.R
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
+import components.MyText
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -94,9 +90,67 @@ private fun Logo() {
 }
 
 @Composable
+fun ImageButtonFile(imageResourceId: String, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(300.dp, 50.dp)
+            .padding(0.dp)
+            .clickable { onClick() }
+            .background(Color(0x00))
+    ) {
+        Image(
+            painter = painterResource(imageResourceId),
+            contentDescription = "Button Image",
+            Modifier.size(400.dp, 50.dp),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+private fun FileMenu(){
+    val imageResources = listOf(
+        "DataBase.svg",
+        "JSON.svg",
+        "Neo4j.svg",
+        "DataBaseLoad.svg",
+        "JSONLoad.svg",
+        "Neo4jLoad.svg"
+    )
+
+    Box(
+            Modifier
+                .size(300.dp, 300.dp)
+                .shadow(
+                    elevation = 5f.dp,
+                    spotColor = Color.Black
+                )
+                .background(Color(0xFF3D3D3D)),
+
+        ) {
+        LazyColumn(
+            modifier = Modifier
+                .size(300.dp, 300.dp)
+
+        ) {
+            items(imageResources) { image ->
+                ImageButtonFile(
+                    imageResourceId = image,
+                    onClick = {
+                    }
+                )
+            }
+        }
+        }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
 private fun FileButton() {
+    var isImageVisible by remember { mutableStateOf(false) }
     Box(
         Modifier
+            .clickable{ isImageVisible = !isImageVisible }
             .size(Config.headerHeight.dp)
             .shadow(
                 elevation = 5f.dp,
@@ -105,5 +159,16 @@ private fun FileButton() {
         contentAlignment = Alignment.Center
     ) {
         MyText("File", 16f)
+        }
+    if (isImageVisible) {
+        Box(
+            Modifier.padding(top = 33.dp)
+        ) {
+            Popup (
+                properties = PopupProperties(focusable = false)
+        ) {
+            FileMenu()
+        }
+    }
     }
 }

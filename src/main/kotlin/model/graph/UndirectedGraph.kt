@@ -73,6 +73,12 @@ open class UndirectedGraph : Graph {
 
     fun getEdges(vertex: Vertex) = _adjacencyList[vertex]
 
+    override fun getEdge(first: Int, second: Int): Edge? {
+        val firstVertex = findVertex(first) ?: return null
+
+        return getEdges(firstVertex)?.find { it.second.key == second }
+    }
+
     private data class UndirectedVertex(override var key: Int) : Vertex
 
     private data class UndirectedEdge(override val first: Vertex, override val second: Vertex) : Edge {

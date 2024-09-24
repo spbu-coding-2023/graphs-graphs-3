@@ -9,4 +9,5 @@ interface Graph {
     fun updateVertex(key: Int, newKey: Int): Vertex?
     fun addEdge(first: Int, second: Int, weight: Long = 1): Edge?
     fun removeEdge(first: Int, second: Int): Edge?
+    fun getEdge(first: Int, second: Int): Edge?
 }

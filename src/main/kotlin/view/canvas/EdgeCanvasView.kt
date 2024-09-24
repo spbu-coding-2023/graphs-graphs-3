@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import viewModel.canvas.EdgeCanvasViewModel
 
@@ -14,11 +13,19 @@ fun EdgeCanvasView(
     viewModel: EdgeCanvasViewModel,
     modifier: Modifier = Modifier
 ) {
+
     Canvas(Modifier.fillMaxSize()) {
         // something hard thing for drawing edge from border of node, not from center
-        val firstCenter = viewModel.first.offset + Offset(viewModel.first.radius.value, viewModel.first.radius.value)
+        val firstCenter =
+            viewModel.first.offset + Offset(
+                viewModel.first.radius.value,
+                viewModel.first.radius.value
+            )
         val secondCenter =
-            viewModel.second.offset + Offset(viewModel.second.radius.value, viewModel.second.radius.value)
+            viewModel.second.offset + Offset(
+                viewModel.second.radius.value,
+                viewModel.second.radius.value
+            )
 
         val vector = (secondCenter - firstCenter)
         val vectorNorm = vector / vector.getDistance()
