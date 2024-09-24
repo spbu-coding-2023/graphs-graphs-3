@@ -6,7 +6,7 @@ import androidx.compose.foundation.gestures.onDrag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import components.MyText
+import graph
+import model.reader.SQLiteReader
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -108,7 +110,8 @@ fun ImageButtonFile(imageResourceId: String, onClick: () -> Unit) {
 }
 
 @Composable
-private fun FileMenu(){
+private fun FileMenu() {
+    var count by remember { mutableStateOf(0) }
     val imageResources = listOf(
         "DataBase.svg",
         "JSON.svg",
@@ -119,13 +122,13 @@ private fun FileMenu(){
     )
 
     Box(
-            Modifier
-                .size(300.dp, 300.dp)
-                .shadow(
-                    elevation = 5f.dp,
-                    spotColor = Color.Black
-                )
-                .background(Color(0xFF3D3D3D)),
+        Modifier
+            .size(300.dp, 300.dp)
+            .shadow(
+                elevation = 5f.dp,
+                spotColor = Color.Black
+            )
+            .background(Color(0xFF3D3D3D)),
 
         ) {
         LazyColumn(
@@ -137,11 +140,17 @@ private fun FileMenu(){
                 ImageButtonFile(
                     imageResourceId = image,
                     onClick = {
+                        if (image == "DataBase.svg") {
+                            SQLiteReader().saveGraph(
+                                graph, "src/main/kotlin/model/reader/database/graph.db", "graph$count"
+                            )
+                            count++
+                        }
                     }
                 )
             }
         }
-        }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -150,7 +159,7 @@ private fun FileButton() {
     var isImageVisible by remember { mutableStateOf(false) }
     Box(
         Modifier
-            .clickable{ isImageVisible = !isImageVisible }
+            .clickable { isImageVisible = !isImageVisible }
             .size(Config.headerHeight.dp)
             .shadow(
                 elevation = 5f.dp,
@@ -159,16 +168,16 @@ private fun FileButton() {
         contentAlignment = Alignment.Center
     ) {
         MyText("File", 16f)
-        }
+    }
     if (isImageVisible) {
         Box(
             Modifier.padding(top = 33.dp)
         ) {
-            Popup (
+            Popup(
                 properties = PopupProperties(focusable = false)
-        ) {
-            FileMenu()
+            ) {
+                FileMenu()
+            }
         }
-    }
     }
 }
