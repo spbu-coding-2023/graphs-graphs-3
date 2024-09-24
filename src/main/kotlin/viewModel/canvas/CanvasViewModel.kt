@@ -16,6 +16,7 @@ import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
 import model.algorithm.Dijkstra
+import model.algorithm.FindCycle
 import model.graph.Edge
 import model.graph.UndirectedGraph
 import view.HEADER_HEIGHT
@@ -38,6 +39,8 @@ class CanvasViewModel(
     var pickedNodeForEdgeCreating by mutableStateOf<VertexCanvasViewModel?>(null)
     var pickedNodeForDijkstra by mutableStateOf<VertexCanvasViewModel?>(null)
 
+    var isEdgeFindCycleMode by mutableStateOf(false)
+
     var isNodeCreatingMode by mutableStateOf(false)
     var edgesCount by mutableStateOf(0)
     var zoom by mutableStateOf(1f)
@@ -58,6 +61,7 @@ class CanvasViewModel(
             val viewModel = graphViewModel.createVertex(coordinates) ?: return
 
             _vertices[viewModel] = VertexCanvasViewModel(viewModel, this)
+            _edges[getVertex(viewModel)] = ArrayList()
         }
     }
 
@@ -126,10 +130,12 @@ class CanvasViewModel(
     * Change edges' color
     * */
     fun changeEdgesColor(edges: MutableList<Pair<Edge, Color>>) {
+        println(edges)
         graphViewModel.changeEdgesColor(edges)
     }
 
     fun resetEdgesColorToDefault() {
+        println("reset")
         graphViewModel.resetEdgesColorToDefault()
     }
 
@@ -144,6 +150,12 @@ class CanvasViewModel(
         }
 
         edgesCount++
+    }
+
+    fun onClick(vm: VertexCanvasViewModel) {
+        onClickNodeEdgeCreating(vm)
+        onClickNodeFindCycle(vm)
+        onClickNodeDijkstraOn(vm)
     }
 
     fun onClickNodeEdgeCreating(vm: VertexCanvasViewModel) {
@@ -163,9 +175,17 @@ class CanvasViewModel(
         pickedNodeForEdgeCreating = null
     }
 
+    fun onClickNodeFindCycle(vm: VertexCanvasViewModel) {
+        if (!isEdgeFindCycleMode) return
+
+        resetEdgesColorToDefault()
+        println(graph)
+        changeEdgesColor(FindCycle(graph).calculate(vm.vertexViewModel.vertex).map { Pair(it, Color.Red) }
+            .toMutableList())
+    }
+
     fun onClickNodeDijkstraOn(vm: VertexCanvasViewModel) {
         if (!isDijkstraMode) {
-            resetEdgesColorToDefault()
             return
         }
 

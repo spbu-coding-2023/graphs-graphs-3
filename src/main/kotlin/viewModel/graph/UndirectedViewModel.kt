@@ -20,19 +20,17 @@ class UndirectedViewModel(
     val showVerticesLabels: Boolean,
     var groups: HashMap<Vertex, Int> = hashMapOf(),
     var ranks: List<Pair<Vertex, Double>> = listOf(),
-    var bridges: List<Edge> = listOf(),
+    var bridges: List<Edge> = listOf()
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
     private val BridgesWthColor = mutableListOf<Pair<Edge, Color>>()
-    private val PathWthColor = mutableListOf<Pair<Edge, Color>>()
 
     private val _color = mutableStateOf(Color.Black)
     private val _clustering = mutableStateOf(false)
     private val _ranked = mutableStateOf(false)
     private val _bridgeFinded = mutableStateOf(false)
-    private val _shortestPathFinded = mutableStateOf(false)
 
     private var size by mutableStateOf(10f)
 
@@ -74,8 +72,6 @@ class UndirectedViewModel(
             }
         }
 
-    var shortestPathFinded by mutableStateOf(false)
-    
     fun createEdge(first: VertexViewModel, second: VertexViewModel): Pair<EdgeViewModel, EdgeViewModel>? {
         val edge = graph.addEdge(first.getKey(), second.getKey()) ?: return null
 
@@ -150,6 +146,7 @@ class UndirectedViewModel(
         )
 
         _vertices[vertex] = viewModel
+        _adjacencyList[viewModel] = ArrayList()
 
         return viewModel
     }

@@ -28,7 +28,7 @@ fun VertexCanvasView(
             .size(viewModel.radius * 2)
             .offset(viewModel.offset.x.dp, viewModel.offset.y.dp)
             .border(
-                color = if (viewModel.canvasViewModel.pickedNodeForDijkstra != viewModel) viewModel.color else Color.Green,
+                color = if (viewModel.canvasViewModel.pickedNodeForEdgeCreating != viewModel) viewModel.color else Color.Green,
                 width = viewModel.strokeWidth.dp,
                 shape = CircleShape
             )

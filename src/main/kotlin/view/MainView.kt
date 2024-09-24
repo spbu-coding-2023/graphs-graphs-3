@@ -36,7 +36,10 @@ fun displayAlgorithmMenu(name: String, viewModel: MenuViewModel) {
         ImageResource("Bellman-Ford.svg") {},
         ImageResource("IslandTree.svg") {},
         ImageResource("StrongConnectivityComponent.svg") {},
-        ImageResource("FindCycle.svg") {}
+        ImageResource("FindCycle.svg") {
+            viewModel.canvasViewModel.isEdgeFindCycleMode = !viewModel.canvasViewModel.isEdgeFindCycleMode
+            viewModel.canvasViewModel.resetEdgesColorToDefault()
+        }
     )
 
     Box(
@@ -74,6 +77,7 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
         val modifier = when (imageResourceId) {
             "FindBridge.svg" -> Modifier.glowRec(viewModel.isBridgeFinded)
             "Dijkstra.svg" -> Modifier.glowRec(viewModel.isDijkstraMode)
+            "FindCycle.svg" -> Modifier.glowRec(viewModel.canvasViewModel.isEdgeFindCycleMode)
             else -> Modifier.alpha(0.2f)
         }
 

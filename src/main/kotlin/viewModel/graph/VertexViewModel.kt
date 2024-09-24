@@ -1,6 +1,7 @@
 package viewModel.graph
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
@@ -11,7 +12,7 @@ import model.graph.Vertex
 
 class VertexViewModel(
     private val _labelVisible: Boolean,
-    private val vertex: Vertex,
+    val vertex: Vertex,
     x: Float = 0f,
     y: Float = 0f,
     color: Color = Color.Black,
@@ -35,5 +36,9 @@ class VertexViewModel(
     fun onDrag(it: Offset): Unit {
         x += it.x
         y += it.y
+    }
+
+    override fun toString(): String {
+        return "VertexViewModel ${vertex.key}"
     }
 }
