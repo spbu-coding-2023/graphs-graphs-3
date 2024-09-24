@@ -12,5 +12,6 @@ class MenuViewModel(
     var isEdgeCreating by canvasViewModel::isEdgeCreatingMode
     var isClustering by canvasViewModel::isClustering
     var isRanked by canvasViewModel::isRanked
+    var isFinded by canvasViewModel::isFinded
     var isAlgorithmMenuOpen by mutableStateOf(false)
 }
