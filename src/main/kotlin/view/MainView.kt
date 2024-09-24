@@ -5,7 +5,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -22,22 +21,23 @@ val HEADER_HEIGHT = Config.headerHeight
 val MENU_WIDTH = Config.menuWidth
 
 @Composable
-fun DisplayAlgorithmMenu(name: String, viewModel: MenuViewModel, onClick: () -> Unit = {}) {
+fun displayAlgorithmMenu(name: String, viewModel: MenuViewModel) {
     var isBridgeFinded by viewModel::isFinded
 
+    data class ImageResource(val icon: String, val onClick: () -> Unit)
+
     val imageResources = listOf(
-        mapOf("icon" to "FindBridge.svg", "onClick" to { isBridgeFinded = !isBridgeFinded }),
-        mapOf("icon" to "Dijkstra.svg", "onClick" to {}),
-        mapOf("icon" to "Bellman-Ford.svg", "onClick" to {}),
-        mapOf("icon" to "IslandTree.svg", "onClick" to {}),
-        mapOf("icon" to "StrongConnectivityComponent.svg", "onClick" to {}),
-        mapOf("icon" to "FindCycle.svg", "onClick" to {})
+        ImageResource("FindBridge.svg") { isBridgeFinded = !isBridgeFinded },
+        ImageResource("Dijkstra.svg") {},
+        ImageResource("Bellman-Ford.svg") {},
+        ImageResource("IslandTree.svg") {},
+        ImageResource("StrongConnectivityComponent.svg") {},
+        ImageResource("FindCycle.svg") {}
     )
+
     Box(
         modifier = Modifier.padding(top = 240.dp, start = 80.dp)
     ) {
-
-        // Изображение
         Image(
             painter = painterResource(name),
             contentDescription = "Padded Image",
@@ -51,10 +51,8 @@ fun DisplayAlgorithmMenu(name: String, viewModel: MenuViewModel, onClick: () -> 
                 .background(Color.Transparent)
                 .padding(top = 150.dp, start = 30.dp)
         ) {
-            items(imageResources) { button ->
-                val icon = button["icon"] as String
-                val onClickAction = button["onClick"] as? () -> Unit ?: {}
-                ImageButton(imageResourceId = icon, onClick = onClickAction, viewModel)
+            items(imageResources) { imageResource ->
+                ImageButton(imageResourceId = imageResource.icon, onClick = imageResource.onClick, viewModel)
             }
         }
     }
@@ -85,7 +83,7 @@ fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuVie
 
 @Composable
 fun MainView(mainViewModel: MainViewModel) {
-    var isBridgeFinded by mainViewModel.menuViewModel::isFinded
+
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
         MenuView(mainViewModel.menuViewModel)
 
@@ -96,10 +94,10 @@ fun MainView(mainViewModel: MainViewModel) {
     }
 
     if (mainViewModel.menuViewModel.isAlgorithmMenuOpen) {
-        DisplayAlgorithmMenu(
+        displayAlgorithmMenu(
             "DownMenuAlgorithm.svg",
             mainViewModel.menuViewModel
-        ) { isBridgeFinded = !isBridgeFinded }
+        )
     }
 
     SettingsView(mainViewModel.settingsViewModel)
