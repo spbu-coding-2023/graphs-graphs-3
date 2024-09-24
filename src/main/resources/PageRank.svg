@@ -1,0 +1,51 @@
+<svg width="66" height="66" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M63 33C63 49.5685 49.5685 63 33 63C16.4315 63 3 49.5685 3 33C3 16.4315 16.4315 3 33 3C49.5685 3 63 16.4315 63 33Z" fill="#64A6E3"/>
+<path d="M48 27.5C48 29.433 46.433 31 44.5 31C42.567 31 41 29.433 41 27.5C41 25.567 42.567 24 44.5 24C46.433 24 48 25.567 48 27.5Z" fill="white"/>
+<circle cx="38.5" cy="50.5" r="3.5" fill="white"/>
+<circle cx="51.5" cy="30.5" r="3.5" fill="white"/>
+<circle cx="58.5" cy="32.5" r="3.5" fill="white"/>
+<circle cx="18.5" cy="11.5" r="3.5" fill="white"/>
+<circle cx="48.5" cy="42.5" r="3.5" fill="white"/>
+<circle cx="55.5" cy="39.5" r="3.5" fill="white"/>
+<circle cx="43.5" cy="12.5" r="3.5" fill="white"/>
+<circle cx="46.5" cy="19.5" r="3.5" fill="white"/>
+<circle cx="35.5" cy="14.5" r="3.5" fill="white"/>
+<circle cx="15.5" cy="28.5" r="3.5" fill="white"/>
+<path d="M19 19.5C19 21.433 17.433 23 15.5 23C13.567 23 12 21.433 12 19.5C12 17.567 13.567 16 15.5 16C17.433 16 19 17.567 19 19.5Z" fill="white"/>
+<circle cx="27.5" cy="10.5" r="3.5" fill="white"/>
+<circle cx="32.5" cy="55.5" r="3.5" fill="white"/>
+<path d="M30 49.5C30 51.433 28.433 53 26.5 53C24.567 53 23 51.433 23 49.5C23 47.567 24.567 46 26.5 46C28.433 46 30 47.567 30 49.5Z" fill="white"/>
+<path d="M22 47.5C22 49.433 20.433 51 18.5 51C16.567 51 15 49.433 15 47.5C15 45.567 16.567 44 18.5 44C20.433 44 22 45.567 22 47.5Z" fill="white"/>
+<circle cx="46.5" cy="50.5" r="3.5" fill="white"/>
+<circle cx="54.5" cy="22.5" r="3.5" fill="white"/>
+<circle cx="10.5" cy="34.5" r="3.5" fill="white"/>
+<circle cx="16.5" cy="39.5" r="3.5" fill="white"/>
+<circle cx="23.5" cy="17.5" r="3.5" fill="white"/>
+<path d="M34 20.5C34 22.433 32.433 24 30.5 24C28.567 24 27 22.433 27 20.5C27 18.567 28.567 17 30.5 17C32.433 17 34 18.567 34 20.5Z" fill="white"/>
+<circle cx="51.5" cy="14.5" r="3.5" fill="white"/>
+<circle cx="34.5" cy="6.5" r="3.5" fill="white"/>
+<circle cx="9.5" cy="43.5" r="3.5" fill="white"/>
+<circle cx="8.5" cy="25.5" r="3.5" fill="white"/>
+<path d="M28 41.5C28 43.433 26.433 45 24.5 45C22.567 45 21 43.433 21 41.5C21 39.567 22.567 38 24.5 38C26.433 38 28 39.567 28 41.5Z" fill="white"/>
+<path d="M25 33.5C25 35.433 23.433 37 21.5 37C19.567 37 18 35.433 18 33.5C18 31.567 19.567 30 21.5 30C23.433 30 25 31.567 25 33.5Z" fill="white"/>
+<circle cx="32.5" cy="44.5" r="3.5" fill="white"/>
+<path d="M44 42.5C44 44.433 42.433 46 40.5 46C38.567 46 37 44.433 37 42.5C37 40.567 38.567 39 40.5 39C42.433 39 44 40.567 44 42.5Z" fill="white"/>
+<circle cx="45.5" cy="35.5" r="3.5" fill="white"/>
+<circle cx="33.5" cy="32.5" r="7.5" fill="black"/>
+<path d="M42 21.5C42 23.433 40.433 25 38.5 25C36.567 25 35 23.433 35 21.5C35 19.567 36.567 18 38.5 18C40.433 18 42 19.567 42 21.5Z" fill="white"/>
+<path d="M57.5 47.8368C57.5 49.7698 55.933 51.3368 54 51.3368C52.067 51.3368 50.5 49.7698 50.5 47.8368C50.5 45.9038 52.067 44.3368 54 44.3368C55.933 44.3368 57.5 45.9038 57.5 47.8368Z" fill="white"/>
+<path d="M26 56.5C26 58.433 24.433 60 22.5 60C20.567 60 19 58.433 19 56.5C19 54.567 20.567 53 22.5 53C24.433 53 26 54.567 26 56.5Z" fill="white"/>
+<path d="M44 57.5C44 59.433 42.433 61 40.5 61C38.567 61 37 59.433 37 57.5C37 55.567 38.567 54 40.5 54C42.433 54 44 55.567 44 57.5Z" fill="white"/>
+<circle cx="24.5" cy="25.5" r="3.5" fill="white"/>
+<g opacity="0.6" filter="url(#filter0_f_37_20)">
+<path d="M57 33C57 46.2548 46.2548 57 33 57C19.7452 57 9 46.2548 9 33C9 19.7452 19.7452 9 33 9C46.2548 9 57 19.7452 57 33Z" stroke="#64A6E3" stroke-width="10"/>
+</g>
+<path d="M62 33C62 49.0163 49.0163 62 33 62C16.9837 62 4 49.0163 4 33C4 16.9837 16.9837 4 33 4C49.0163 4 62 16.9837 62 33Z" stroke="#64A6E3" stroke-opacity="0.9" stroke-width="2"/>
+<defs>
+<filter id="filter0_f_37_20" x="0" y="0" width="66" height="66" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_37_20"/>
+</filter>
+</defs>
+</svg>
