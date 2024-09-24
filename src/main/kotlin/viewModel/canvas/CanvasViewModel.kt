@@ -187,6 +187,7 @@ class CanvasViewModel(
         val edges = dijksta.triplesToEdges(path)
 
         val PathWthColor = edges.map { it to Config.Edge.dijkstraColor }
+        resetEdgesColorToDefault()
         changeEdgesColor(PathWthColor.toMutableList())
         pickedNodeForDijkstra = null
     }
