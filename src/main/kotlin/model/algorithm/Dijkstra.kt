@@ -1,9 +1,16 @@
 package model.algorithm
 
+import model.graph.Edge
 import model.graph.Graph
 import model.graph.Vertex
 
 class Dijkstra(private val graph: Graph) {
+    fun triplesToEdges(list: List<Triple<Int, Int, Long>>): List<Edge> {
+        return list.map {
+            graph.getEdge(it.first, it.second)
+                ?: throw Error("There is no edge from ${it.first} node to ${it.second} node")
+        }
+    }
 
     fun findShortestPath(startKey: Int, endKey: Int): List<Triple<Int, Int, Long>>? {
         val startVertex = graph.vertices.find { it.key == startKey } ?: return null

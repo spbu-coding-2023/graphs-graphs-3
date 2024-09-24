@@ -24,8 +24,17 @@ class VertexCanvasViewModel(
         vertexViewModel.onDrag(it * (1f / canvasViewModel.zoom))
     }
 
-    fun onClickWhenEdgeCreating() {
+    fun onClick() {
+        onClickWhenDijkstraOn()
+        onClickWhenEdgeCreating()
+    }
+
+    private fun onClickWhenEdgeCreating() {
         canvasViewModel.onClickNodeEdgeCreating(this)
+    }
+
+    private fun onClickWhenDijkstraOn() {
+        canvasViewModel.onClickNodeDijkstraOn(this)
     }
 
     private fun calculateOffset() = Offset(
