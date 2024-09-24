@@ -1,5 +1,6 @@
 package viewModel.canvas
 
+import Config
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.PointerMatcher
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerInputScope
+import model.algorithm.Dijkstra
 import model.graph.Edge
 import model.graph.UndirectedGraph
 import view.HEADER_HEIGHT
@@ -32,7 +34,9 @@ class CanvasViewModel(
     var isFinded by graphViewModel::bridgeFinded
 
     var isEdgeCreatingMode by mutableStateOf(false)
+    var isDijkstraMode by mutableStateOf(false)
     var pickedNodeForEdgeCreating by mutableStateOf<VertexCanvasViewModel?>(null)
+    var pickedNodeForDijkstra by mutableStateOf<VertexCanvasViewModel?>(null)
 
     var isNodeCreatingMode by mutableStateOf(false)
     var edgesCount by mutableStateOf(0)
@@ -157,5 +161,33 @@ class CanvasViewModel(
 
         createEdge(pickedNodeForEdgeCreating ?: return, vm)
         pickedNodeForEdgeCreating = null
+    }
+
+    fun onClickNodeDijkstraOn(vm: VertexCanvasViewModel) {
+        if (!isDijkstraMode) {
+            resetEdgesColorToDefault()
+            return
+        }
+
+        if (pickedNodeForDijkstra == vm) {
+            pickedNodeForDijkstra = null
+            return
+        }
+
+        if (pickedNodeForDijkstra == null) {
+            pickedNodeForDijkstra = vm
+            return
+        }
+
+        val firstVertex =
+            pickedNodeForDijkstra ?: throw IllegalStateException("there is no node in pickedNodeForDijkstra method")
+
+        val dijksta = Dijkstra(graph)
+        val path = dijksta.findShortestPath(firstVertex.vertexViewModel.getKey(), vm.vertexViewModel.getKey()) ?: return
+        val edges = dijksta.triplesToEdges(path)
+
+        val PathWthColor = edges.map { it to Config.Edge.dijkstraColor }
+        changeEdgesColor(PathWthColor.toMutableList())
+        pickedNodeForDijkstra = null
     }
 }

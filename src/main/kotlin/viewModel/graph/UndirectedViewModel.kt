@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import model.algorithm.Clustering
+import model.algorithm.Dijkstra
 import model.algorithm.FindBridges
 import model.algorithm.PageRank
 import model.graph.Edge
@@ -19,17 +20,19 @@ class UndirectedViewModel(
     val showVerticesLabels: Boolean,
     var groups: HashMap<Vertex, Int> = hashMapOf(),
     var ranks: List<Pair<Vertex, Double>> = listOf(),
-    var bridges: List<Edge> = listOf()
+    var bridges: List<Edge> = listOf(),
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
     private val BridgesWthColor = mutableListOf<Pair<Edge, Color>>()
+    private val PathWthColor = mutableListOf<Pair<Edge, Color>>()
 
     private val _color = mutableStateOf(Color.Black)
     private val _clustering = mutableStateOf(false)
     private val _ranked = mutableStateOf(false)
     private val _bridgeFinded = mutableStateOf(false)
+    private val _shortestPathFinded = mutableStateOf(false)
 
     private var size by mutableStateOf(10f)
 
@@ -55,7 +58,7 @@ class UndirectedViewModel(
 
             updateSizes()
         }
-    
+
     var bridgeFinded
         get() = _bridgeFinded.value
         set(value) {
@@ -66,12 +69,13 @@ class UndirectedViewModel(
             }
             if (bridgeFinded) {
                 changeEdgesColor(BridgesWthColor)
-            }
-            else{
+            } else {
                 resetEdgesColorToDefault()
             }
         }
 
+    var shortestPathFinded by mutableStateOf(false)
+    
     fun createEdge(first: VertexViewModel, second: VertexViewModel): Pair<EdgeViewModel, EdgeViewModel>? {
         val edge = graph.addEdge(first.getKey(), second.getKey()) ?: return null
 
