@@ -96,19 +96,19 @@ fun MenuView(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(Modifier.height(25f.dp))
-        MenuIcon("Nodes.svg", "AddNode.svg", Modifier.glowCircle(isNodeCreating)) { isNodeCreating = !isNodeCreating }
+        MenuIcon("Nodes.svg", "AddNode.svg", Modifier.glow(isNodeCreating)) { isNodeCreating = !isNodeCreating }
         MenuIcon("Ribs.svg", "AddEdge.svg", modifier = Modifier.alpha(0.2f))
-        MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glowCircle(isClustering)) { isClustering = !isClustering }
-        MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glowCircle(viewModel.isRanked)) { isRanked = !isRanked }
+        MenuIcon("Clustering.svg", "ClusterD.svg", Modifier.glow(isClustering)) { isClustering = !isClustering }
+        MenuIcon("PageRank.svg", "AnalysisGraph.svg", Modifier.glow(viewModel.isRanked)) { isRanked = !isRanked }
         MenuIcon(
             "Algorithm.svg",
             "Algorithms....svg",
-            Modifier.glowCircle(viewModel.isAlgorithmMenuOpen)
+            Modifier.glow(viewModel.isAlgorithmMenuOpen)
         ) { isAlgorithmMenuOpen = !isAlgorithmMenuOpen }
     }
 }
 
-fun Modifier.glowCircle(flag: Boolean): Modifier {
+fun Modifier.glow(flag: Boolean): Modifier {
     if (!flag) return Modifier
 
     return Modifier.border(4f.dp, color = Color(0xFFFF00FF), shape = CircleShape)

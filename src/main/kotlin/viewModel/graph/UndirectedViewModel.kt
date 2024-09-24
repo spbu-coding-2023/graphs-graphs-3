@@ -52,7 +52,7 @@ class UndirectedViewModel(
         set(value) {
             _ranked.value = value
             ranks = PageRank(graph).computePageRank(3)
-            println("хуй")
+
             updateSizes()
         }
     
