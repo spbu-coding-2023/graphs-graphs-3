@@ -28,6 +28,7 @@ class CanvasViewModel(
 
     var isClustering by graphViewModel::clustering
     var isRanked by graphViewModel::ranked
+    var isFinded by graphViewModel::bridgeFinded
 
     var isNodeCreatingMode by mutableStateOf(false)
     var zoom by mutableStateOf(1f)
@@ -114,7 +115,7 @@ class CanvasViewModel(
     /*
     * Change edges' color
     * */
-    fun changeEdgesColor(edges: List<Pair<Edge, Color>>) {
+    fun changeEdgesColor(edges: MutableList<Pair<Edge, Color>>) {
         graphViewModel.changeEdgesColor(edges)
     }
 

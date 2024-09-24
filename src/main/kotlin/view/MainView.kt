@@ -1,26 +1,28 @@
 package view
 
 import Config
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import view.canvas.CanvasView
 import viewModel.MainViewModel
+import viewModel.MenuViewModel
 
 val HEADER_HEIGHT = Config.headerHeight
 val MENU_WIDTH = Config.menuWidth
 
 @Composable
-fun DisplayAlgorithmMenu(name: String) {
+fun DisplayAlgorithmMenu(name: String, viewModel: MenuViewModel, onClick: () -> Unit = {}) {
 
     val imageResources = listOf(
         "FindBridge.svg",
@@ -52,33 +54,48 @@ fun DisplayAlgorithmMenu(name: String) {
                 ImageButton(
                     imageResourceId = image,
                     onClick = {
-                    }
+                        if(image == "FindBridge.svg"){
+                            onClick()
+                            }
+                    }, viewModel
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageButton(imageResourceId: String, onClick: () -> Unit) {
+fun ImageButton(imageResourceId: String, onClick: () -> Unit, viewModel: MenuViewModel) {
     Box(
         modifier = Modifier
             .size(440.dp, 60.dp)
             .padding(1.dp)
-            .clickable { onClick() }
             .background(Color(0x00))
     ) {
-        Image(
-            painter = painterResource(imageResourceId),
-            contentDescription = "Button Image",
-            modifier = Modifier.size(445.dp, 59.dp),
-            contentScale = ContentScale.Crop
-        )
+        if (imageResourceId == "FindBridge.svg") {
+            Image(
+                painter = painterResource(imageResourceId),
+                contentDescription = "Button Image",
+                modifier = Modifier.glowRec(viewModel.isFinded).size(445.dp, 59.dp).onClick(onClick = onClick),
+                contentScale = ContentScale.Crop
+            )
+        }
+        else {
+            Image(
+                painter = painterResource(imageResourceId),
+                contentDescription = "Button Image",
+                modifier = Modifier.alpha(0.2f).size(445.dp, 59.dp).onClick(onClick = onClick),
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 
 @Composable
 fun MainView(mainViewModel: MainViewModel) {
+
+    var isBridgeFinded by mainViewModel.menuViewModel::isFinded
 
     Row(Modifier.offset(0f.dp, Config.headerHeight.dp)) {
         MenuView(mainViewModel.menuViewModel)
@@ -90,8 +107,16 @@ fun MainView(mainViewModel: MainViewModel) {
     }
 
     if (mainViewModel.menuViewModel.isAlgorithmMenuOpen) {
-        DisplayAlgorithmMenu("DownMenuAlgorithm.svg")
+        DisplayAlgorithmMenu("DownMenuAlgorithm.svg",
+            mainViewModel.menuViewModel
+        ){ isBridgeFinded = !isBridgeFinded }
     }
 
     SettingsView(mainViewModel.settingsViewModel)
+}
+
+fun Modifier.glowRec(flag: Boolean): Modifier {
+    if (!flag) return Modifier
+
+    return Modifier.border(1f.dp, color = Color(0xFFFF00FF), shape = RectangleShape)
 }

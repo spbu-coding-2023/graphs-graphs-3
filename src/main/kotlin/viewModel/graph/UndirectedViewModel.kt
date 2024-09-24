@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import model.algorithm.Clustering
+import model.algorithm.FindBridges
 import model.algorithm.PageRank
 import model.graph.Edge
 import model.graph.UndirectedGraph
@@ -17,15 +18,18 @@ class UndirectedViewModel(
     private val graph: UndirectedGraph,
     val showVerticesLabels: Boolean,
     var groups: HashMap<Vertex, Int> = hashMapOf(),
-    var ranks: List<Pair<Vertex, Double>> = listOf()
+    var ranks: List<Pair<Vertex, Double>> = listOf(),
+    var bridges: List<Edge> = listOf()
 ) {
     private val _vertices = hashMapOf<Vertex, VertexViewModel>()
     private val _adjacencyList = hashMapOf<VertexViewModel, ArrayList<EdgeViewModel>>()
     private val groupColors = hashMapOf<Int, Color>(0 to Color.Black)
+    private val BridgesWthColor = mutableListOf<Pair<Edge, Color>>()
 
     private val _color = mutableStateOf(Color.Black)
     private val _clustering = mutableStateOf(false)
     private val _ranked = mutableStateOf(false)
+    private val _bridgeFinded = mutableStateOf(false)
 
     private var size by mutableStateOf(10f)
 
@@ -48,7 +52,24 @@ class UndirectedViewModel(
         set(value) {
             _ranked.value = value
             ranks = PageRank(graph).computePageRank(3)
+            println("хуй")
             updateSizes()
+        }
+    
+    var bridgeFinded
+        get() = _bridgeFinded.value
+        set(value) {
+            _bridgeFinded.value = value
+            bridges = FindBridges(graph).findBridges()
+            bridges.forEach {
+                BridgesWthColor.add(it to Color.Red)
+            }
+            if (bridgeFinded) {
+                changeEdgesColor(BridgesWthColor)
+            }
+            else{
+                resetEdgesColorToDefault()
+            }
         }
 
     private fun getColor(group: Int): Color {
@@ -120,7 +141,7 @@ class UndirectedViewModel(
     /*
     * Change edges' color
     * */
-    fun changeEdgesColor(edges: List<Pair<Edge, Color>>) {
+    fun changeEdgesColor(edges: MutableList<Pair<Edge, Color>>) {
         edges.forEach { p ->
             val edge = p.first
             val color = p.second
